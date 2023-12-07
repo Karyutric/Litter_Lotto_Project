@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import ImageCapture from './ImageCapture';
+import MobileImageCapture from './MobileImageCapture'; // Import the mobile component
+import LocationCapture from './LocationCapture';
 
-function App() {
+const isMobileDevice = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
+
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div>
+       
+        <Routes>
+          <Route exact path="/" element={isMobileDevice() ? <MobileImageCapture /> : <ImageCapture />} />
+          <Route path="/location" element={<LocationCapture />} />
+        </Routes>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
+
