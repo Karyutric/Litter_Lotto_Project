@@ -18,6 +18,10 @@ const MobileImageCapture = () => {
 
   // State to store the current longitude.
   const [longitude, setLongitude] = useState(null);
+  
+  // State to store the material tag entered by the user
+  const [materialTag, setMaterialTag] = useState('');
+
 
   // Effect to initialize the camera when the component mounts.
   useEffect(() => {
@@ -73,6 +77,7 @@ const MobileImageCapture = () => {
     // Create a FormData object and append the image and location data.
     const formData = new FormData();
     formData.append('image_file', imageBlob, `captured-image-${Date.now()}.jpg`);
+    formData.append('material_tag', materialTag);
     formData.append('latitude', latitude);
     formData.append('longitude', longitude);
 
@@ -87,6 +92,7 @@ const MobileImageCapture = () => {
   // Function to handle changing the camera back to the live feed.
     setShowPreview(false);
     setImageSrc(null);
+    setMaterialTag('');
     initCamera();
   
   };
@@ -110,6 +116,13 @@ const MobileImageCapture = () => {
       ) : (
         <>
           {imageSrc && <img src={imageSrc} alt="Captured" className="video-element" />}
+          <input
+            type="text"
+            value={materialTag}
+            onChange={(e) => setMaterialTag(e.target.value)}
+            placeholder="Enter material tag"
+            className="material-tag-input" // Add CSS class for styling
+          />
           <button className="button" onClick={handleAcceptPhoto}>Accept Photo</button>
           <button className="button" onClick={handleRetakePhoto}>Retake Photo</button>
         </>

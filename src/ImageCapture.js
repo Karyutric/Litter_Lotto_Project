@@ -1,103 +1,83 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { sendDataToServer } from './utils';
-import "./camera.css";
+import React, { useState, useEffect, useRef } from 'react';  // Importing React hooks
+import { sendDataToServer } from './utils';  // Importing a utility function to send data to the server
+import "./camera.css";  // Importing CSS for styling
 
-
-
-// This is a React component for capturing images using the device's camera.
+// The ImageCapture component
 const ImageCapture = () => {
-  // Ref to the video element where the camera stream will be displayed.
-  const videoRef = useRef(null);
+  const videoRef = useRef(null);  // Ref to access the video element in the DOM
+  const [imageSrc, setImageSrc] = useState(null);  // State to store the captured image source
+  const [showPreview, setShowPreview] = useState(false);  // State to toggle between preview and capture mode
+  const [latitude, setLatitude] = useState(null);  // State to store latitude for geolocation
+  const [longitude, setLongitude] = useState(null);  // State to store longitude for geolocation
+  const [materialTag, setMaterialTag] = useState(''); // State to store the material tag entered by the user
 
-  // State to hold the captured image's data URL.
-  const [imageSrc, setImageSrc] = useState(null);
-
-  // State to control the visibility of the image preview.
-  const [showPreview, setShowPreview] = useState(false);
-
-  // State to store the current latitude.
-  const [latitude, setLatitude] = useState(null);
-
-  // State to store the current longitude.
-  const [longitude, setLongitude] = useState(null);
-
-  // Effect to initialize the camera when the component mounts.
+  // Effect hook to initialize the camera when the component mounts
   useEffect(() => {
     initCamera();
   }, []);
 
-  // Function to initialize the camera.
+  // Function to initialize the camera
   const initCamera = async () => {
     try {
-      // Defines the constraints for the camera (use the rear camera).
-      const constraints = { video: { facingMode: 'environment' } };
-
-      // Requests access to the media devices and sets the video stream.
-      const stream = await navigator.mediaDevices.getUserMedia(constraints);
-      videoRef.current.srcObject = stream;
+      const constraints = { video: { facingMode: 'environment' } };  // Camera settings
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);  // Access the camera
+      videoRef.current.srcObject = stream;  // Assign the camera stream to the video element
     } catch (error) {
-      console.error('Error accessing camera:', error);
+      console.error('Error accessing camera:', error);  // Error handling
     }
   };
 
-  // Function to handle the capture of an image.
+  // Function to handle image capture
   const handleCapture = async () => {
-    // Create a canvas element to capture and process the image.
-    const canvas = document.createElement('canvas');
-    canvas.width = videoRef.current.videoWidth;
-    canvas.height = videoRef.current.videoHeight;
+    const canvas = document.createElement('canvas');  // Create a canvas element
+    canvas.width = videoRef.current.videoWidth;  // Set canvas width
+    canvas.height = videoRef.current.videoHeight;  // Set canvas height
+    const context = canvas.getContext('2d');  // Get the 2D context of the canvas
+    context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);  // Draw the video frame to the canvas
+    const capturedImageSrc = canvas.toDataURL('image/jpeg');  // Convert the canvas content to a data URL
+    setImageSrc(capturedImageSrc);  // Update the image source state
+    setShowPreview(true);  // Show the preview of the captured image
 
-    // Get the canvas context and draw the current frame from the video.
-    const context = canvas.getContext('2d');
-    context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-
-    // Convert the canvas content to a data URL (JPEG format).
-    const capturedImageSrc = canvas.toDataURL('image/jpeg');
-    setImageSrc(capturedImageSrc);
-    setShowPreview(true);
-
-    // Check if geolocation is available and get the current position.
+    // Get the current geolocation
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
-        setLatitude(position.coords.latitude);
-        setLongitude(position.coords.longitude);
+        setLatitude(position.coords.latitude);  // Update latitude state
+        setLongitude(position.coords.longitude);  // Update longitude state
       });
     } else {
-      console.error('Geolocation is not supported in this browser.');
+      console.error('Geolocation is not supported in this browser.');  // Error handling for unsupported geolocation
     }
   };
 
-  // Function to handle the acceptance of the captured photo.
+  // Function to handle the acceptance of the captured photo
   const handleAcceptPhoto = async () => {
-    // Convert the image source to a blob.
-    const imageBlob = await (await fetch(imageSrc)).blob();
+    const imageBlob = await (await fetch(imageSrc)).blob();  // Convert the image source to a blob
+    const formData = new FormData();  // Create a FormData object
+    formData.append('image_file', imageBlob, `captured-image-${Date.now()}.jpg`);  // Append the image blob to the FormData
+    formData.append('latitude', latitude);  // Append latitude
+    formData.append('longitude', longitude);  // Append longitude
+    formData.append('material_tag', materialTag); // Append the material tag
 
-    // Create a FormData object and append the image and location data.
-    const formData = new FormData();
-    formData.append('image_file', imageBlob, `captured-image-${Date.now()}.jpg`);
-    formData.append('latitude', latitude);
-    formData.append('longitude', longitude);
+    const response = await sendDataToServer(formData);  // Send the FormData to the server
 
-    // Send the data to the server.
-    const response = await sendDataToServer(formData);
-
-    // Handle any errors during the data transmission.
     if (!response.ok) {
-      console.error('Error sending data:', response.statusText);
+      console.error('Error sending data:', response.statusText);  // Error handling for server response
     }
-  // Function to handle  the camera back to the live feed.
-    setShowPreview(false);
-    setImageSrc(null);
-    initCamera();
+    
+    setShowPreview(false);  // Hide the preview
+    setImageSrc(null);  // Reset the image source state
+    setMaterialTag(''); // Reset the material tag state
+    initCamera();  // Re-initialize the camera for a new capture
   };
 
-  // Function to handle retaking the photo.
+  // Function to handle retaking the photo
   const handleRetakePhoto = () => {
-    setShowPreview(false);
-    initCamera();
+    setShowPreview(false);  // Hide the preview
+    setMaterialTag(''); // Reset the material tag state
+    initCamera();  // Re-initialize the camera
   };
 
-  // The component's rendered JSX.
+  // Render the component
   return (
     <div className="container">
       {!showPreview ? (
@@ -108,6 +88,16 @@ const ImageCapture = () => {
       ) : (
         <>
           <img src={imageSrc} alt="Captured" className="video-element" />
+          <div>
+            <label htmlFor="material-tag">Material Tag:</label>
+            <input
+              type="text"
+              id="material-tag"
+              value={materialTag}
+              onChange={(e) => setMaterialTag(e.target.value)}
+              placeholder="Type material (e.g., plastic)"
+            />
+          </div>
           <button className="button" onClick={handleAcceptPhoto}>Accept Photo</button>
           <button className="button" onClick={handleRetakePhoto}>Retake Photo</button>
         </>
@@ -117,9 +107,3 @@ const ImageCapture = () => {
 };
 
 export default ImageCapture;
-
-
-
-
-
-
