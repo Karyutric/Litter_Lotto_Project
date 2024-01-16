@@ -1,35 +1,45 @@
-import React from 'react';  // Importing React library
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';  // Importing components from react-router-dom for routing
-import ImageCapture from './ImageCapture';  // Importing ImageCapture component
-import MobileImageCapture from './MobileImageCapture'; // Importing MobileImageCapture component for mobile devices
-import LocationCapture from './LocationCapture';  // Importing LocationCapture component
-import Gallery from './Gallery';  // Importing Gallery component
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { AuthProvider } from './Components/Services/authContext';
+import LoginForm from './Components/LoginForm/LoginForm';
+import RegisterForm from './Components/LoginForm/RegisterForm';
+import CameraGallery from './Components/CameraFunction/CameraGallery';
+import Dashboard from './Components/Pages/dashboard';
+import NavBar from './Components/Services/NavBar'
 
-// Function to detect if the current device is a mobile device
-const isMobileDevice = () => {
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-};
+const AppContent = () => {
+  const location = useLocation(); // Get the current location
 
-// Main App component
-const App = () => {
+  // Determine if the NavBar should be shown
+  const showNavBar = location.pathname !== '/' && location.pathname !== '/login' && location.pathname !== '/register';
+
   return (
-    <Router> 
-      <div> 
-      
+    <>
+      {showNavBar && <NavBar />}
+      <div className="main-content">
         <Routes>
-          <Route exact path="/" element={isMobileDevice() ? <MobileImageCapture /> : <ImageCapture />} />
-          {/* Route for root path. It renders MobileImageCapture if it's a mobile device, otherwise ImageCapture */}
-          <Route path="/location" element={<LocationCapture />} />
-          {/* Route for '/location' path that renders LocationCapture component */}
+          <Route path="/" element={<LoginForm />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/register" element={<RegisterForm />} />
+          <Route path="/camera-gallery" element={<CameraGallery />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
-
-        <Gallery />
-
       </div>
-    </Router>
+    </>
   );
 };
 
-export default App;  // Exporting the App component for use
+const App = () => {
+  return (
+    <AuthProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </AuthProvider>
+  );
+};
+
+export default App;
+
 
 

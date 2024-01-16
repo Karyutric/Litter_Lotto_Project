@@ -1,0 +1,25 @@
+* {
+    box-sizing: border-box;
+}
+
+.nav-bar {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    background-color: white;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+  }
+
+  .nav-button {
+    background: none;
+    border: none;
+    padding: 10px;
+    font-size: 24px;
+  }
+
+  .camera-button {
+    color: rgb(232, 244, 9); /* or any other styles for the camera button */
+  }

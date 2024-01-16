@@ -1,49 +1,54 @@
-import React, { useState, useEffect } from 'react';  // Importing React and its hooks
+import React, { useState, useEffect } from 'react';
 
 const Gallery = () => {
-  const [images, setImages] = useState([]);  // State to store an array of images
-  const [selectedImage, setSelectedImage] = useState(null); // State to track the selected image for display
+  const [images, setImages] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
 
-  // Effect hook to fetch images when the component mounts
   useEffect(() => {
     fetchImages();
   }, []);
 
-  // Function to fetch images from a server
   const fetchImages = async () => {
     try {
-      const response = await fetch('http://192.168.1.135:8000/image_capture/images/');  // Fetching data from the given URL
-      const data = await response.json();  // Parsing the response as JSON
-      setImages(data); // Updating the images state with fetched data
+      const token = localStorage.getItem('accessToken'); // Retrieve the token from local storage
+
+      const response = await fetch('http://192.168.1.135:8000/image_capture/images/', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` // Include the token in the Authorization header
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      setImages(data);
     } catch (error) {
-      console.error('Error fetching images:', error);  // Error handling in case of failure to fetch
+      console.error('Error fetching images:', error);
     }
   };
 
-  // Function to handle image click, setting the selected image
   const handleImageClick = (image) => {
-    setSelectedImage(image);  // Updating the selectedImage state
+    setSelectedImage(image);
   };
 
-  // Function to close the modal that displays the selected image
   const handleCloseModal = () => {
-    setSelectedImage(null);  // Resetting the selectedImage state
+    setSelectedImage(null);
   };
 
-  // Rendering the component
   return (
     <div>
       <div className="gallery">
         {images.map((image, index) => (
           <img key={index} src={image.image_url} alt="Gallery" onClick={() => handleImageClick(image)} />
-          // Mapping each image in the images array to an img element
         ))}
       </div>
 
       {selectedImage && (
         <div className="modal" onClick={handleCloseModal}>
           <img src={selectedImage.image_url} alt="Full Size" />
-          {/* Display the material tag if available */}
           {selectedImage.material_tag && <p className="tag">{selectedImage.material_tag}</p>}
         </div>
       )}
@@ -51,5 +56,6 @@ const Gallery = () => {
   );
 };
 
-export default Gallery;  // Exporting the Gallery component
+export default Gallery;
+
 
