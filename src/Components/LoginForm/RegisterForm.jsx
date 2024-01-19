@@ -13,7 +13,8 @@ const RegisterForm = () => {
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
     const navigate = useNavigate();
-
+    
+    // eslint-disable-next-line
     const { setUser } = useContext(AuthContext);
 
     const handleSubmit = async (e) => {
@@ -37,12 +38,9 @@ const RegisterForm = () => {
     
 
     const handleSuccessfulRegistration = (data) => {
-        // Assuming the registration response includes user data and token
-        localStorage.setItem('user', JSON.stringify(data.user));
-        localStorage.setItem('token', data.token);
-        setUser(data.user);
+        console.log('Registration successful:', data);
         navigate('/login');
-    }
+    };
 
     return (
         <div className="form-container">

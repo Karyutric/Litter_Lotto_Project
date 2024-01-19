@@ -60,6 +60,8 @@ const ImageCapture = () => {
 
     const response = await sendDataToServer(formData);  // Send the FormData to the server
 
+    
+
     if (!response.ok) {
       console.error('Error sending data:', response.statusText);  // Error handling for server response
     }
