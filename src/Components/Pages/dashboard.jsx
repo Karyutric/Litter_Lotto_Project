@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import NavBar from '../Services/NavBar';
+
 import './dashboard.css';
 
 const Dashboard = () => {
@@ -76,7 +76,7 @@ const Dashboard = () => {
         <h1>Litter Impact</h1>
       </header>
       <div className="dashboard-map" ref={mapRef} style={{ height: '100%', width: '100%' }} />
-      <NavBar />
+      
     </div>
   );
 };

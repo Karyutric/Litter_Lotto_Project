@@ -11,6 +11,8 @@ import UserSettings from './Components/Pages/userSettings';
 import NavBar from './Components/Services/NavBar';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const AppContent = () => {
   const location = useLocation();

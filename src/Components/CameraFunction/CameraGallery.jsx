@@ -1,5 +1,5 @@
 import React from 'react';
-import NavBar from '../Services/NavBar';
+
 import ImageCapture from '../../ImageCapture';
 import MobileImageCapture from '../../MobileImageCapture'; 
 import Gallery from '../../Gallery';
@@ -12,7 +12,7 @@ const isMobileDevice = () => {
 const CameraGallery = () => {
   return (
     <>
-      <NavBar />
+      
       <div className='container'>
         {isMobileDevice() ? <MobileImageCapture /> : <ImageCapture />}
         <Gallery />
