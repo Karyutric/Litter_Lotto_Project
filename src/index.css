@@ -10,8 +10,8 @@ body {
   font-family: 'Poppins', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: url('./Components/Assets/image_one_edit_two.png') no-repeat center;
-  background-color: #8fd7df;
+  background: url('./Components/Assets/App_BG_two.png') no-repeat center;
+  background-color: #ffffff;
   background-size: cover; /* Add this if you want the background to cover the entire viewport */
 }
 

@@ -17,7 +17,7 @@ const AdminGallery = () => {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await fetch(`http://192.168.1.135:8000/image_capture/users/${userId}/images`, {
+            const response = await fetch(`http://86.173.58.38:8000/image_capture/users/${userId}/images`, {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + adminAccessToken
@@ -48,7 +48,7 @@ const AdminGallery = () => {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await fetch(`http://192.168.1.135:8000/image_capture/images/${imageId}/delete`, {
+            const response = await fetch(`http://86.173.58.38:8000/image_capture/images/${imageId}/delete`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': 'Bearer ' + adminAccessToken

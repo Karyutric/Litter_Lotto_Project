@@ -6,8 +6,11 @@ import RegisterForm from './Components/LoginForm/RegisterForm';
 import CameraGallery from './Components/CameraFunction/CameraGallery';
 import Dashboard from './Components/Pages/dashboard';
 import AdminPage from './Components/Pages/adminPage';
-import AdminGallery from './Components/Pages/adminGallery'; // Import AdminGallery
+import AdminGallery from './Components/Pages/adminGallery';
+import UserSettings from './Components/Pages/userSettings';
 import NavBar from './Components/Services/NavBar';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AppContent = () => {
   const location = useLocation();
@@ -35,9 +38,11 @@ const AppContent = () => {
             <>
               <Route path="/camera-gallery" element={<CameraGallery />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/userSettings" element={<UserSettings />} />
             </>
           )}
         </Routes>
+        <ToastContainer />
       </div>
     </>
   );

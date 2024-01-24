@@ -46,37 +46,45 @@ const LoginForm = () => {
     };
 
     return (
-        <div className="form-container">
-            <div className='wrapper'>
-                <form onSubmit={handleSubmit}>
-                    <h1>Login</h1>
-                    <div className="input-box">
-                        <input type="text"
-                               placeholder='Username'
-                               required
-                               value={username}
-                               onChange={(e) => setUsername(e.target.value)}/>
-                        <FaUser className='icon'/>
-                    </div>
-                    <div className="input-box">
-                        <input type="password"
-                               placeholder='Password'
-                               required
-                               value={password}
-                               onChange={(e) => setPassword(e.target.value)}/>
-                        <FaLock className='icon'/>
-                    </div>
-                    <div className="forgot">
-                        <Link to="#">Forgot Password</Link>
-                    </div>
-                    <button type="submit">Login</button>
-                    <div className="register-link">
-                        <p>Don't have an account? <Link to="/register">Register</Link></p>
-                    </div>
-                </form>
+        <div className="login-page">
+            {/* Logo container */}
+            <div className="logo-container">
+                <img src="./App_logo.png" alt="Logo" />
+            </div>
+    
+            {/* Form container */}
+            <div className="form-container">
+                <div className='wrapper'>
+                    <form onSubmit={handleSubmit}>
+                        <h1>Login</h1>
+                        <div className="input-box">
+                            <input type="text"
+                                   placeholder='Username'
+                                   required
+                                   value={username}
+                                   onChange={(e) => setUsername(e.target.value)}/>
+                            <FaUser className='icon'/>
+                        </div>
+                        <div className="input-box">
+                            <input type="password"
+                                   placeholder='Password'
+                                   required
+                                   value={password}
+                                   onChange={(e) => setPassword(e.target.value)}/>
+                            <FaLock className='icon'/>
+                        </div>
+                        <div className="forgot">
+                            <Link to="#">Forgot Password</Link>
+                        </div>
+                        <button type="submit">Login</button>
+                        <div className="register-link">
+                            <p>Don't have an account? <Link to="/register">Register</Link></p>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     );
 };
-
-export default LoginForm;
+    
+    export default LoginForm;
