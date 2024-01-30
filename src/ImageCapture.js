@@ -83,7 +83,7 @@ const ImageCapture = () => {
   };
 
   return (
-    <div className="container">
+    <div className="camera-container">
       {!showPreview ? (
         <>
           <video className="video-element" autoPlay playsInline ref={videoRef} />

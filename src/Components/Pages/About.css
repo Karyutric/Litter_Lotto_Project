@@ -1,12 +1,7 @@
-.map-container {
-    height: 300px;
-    width: 300px;
-  }
-
-  .main-wrapper {
-    margin-top: 60px;
+.about-wrapper {
+  margin-top: 60px;
     width: 100%;
-    padding: 40px;
+    padding: 20px;
     background: transparent;
     border: 2px solid rgb(255, 255, 255, .2);
     backdrop-filter: blur(30px);
@@ -14,4 +9,3 @@
     color: #000000;
     border-radius: 10px;
   }
-  

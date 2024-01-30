@@ -1,4 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Gallery = () => {
   const [images, setImages] = useState([]);
@@ -12,7 +17,7 @@ const Gallery = () => {
     try {
       const token = localStorage.getItem('accessToken'); // Retrieve the token from local storage
 
-      const response = await fetch('http://86.173.58.38:8000/image_capture/images/', {
+      const response = await fetch('http://86.181.239.223:8000/image_capture/images/', {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}` // Include the token in the Authorization header
@@ -31,17 +36,19 @@ const Gallery = () => {
   };
 
   const handleImageClick = (image) => {
+    console.log('Image clicked', image); // Debugging
     setSelectedImage(image);
   };
 
   const handleCloseModal = () => {
+    console.log('Closing modal'); // Debugging
     setSelectedImage(null);
   };
 
   const handleDeleteImage = async () => {
     if (selectedImage) {
       try {
-        const response = await fetch(`http://86.173.58.38:8000/image_capture/images/${selectedImage.id}/delete`, {
+        const response = await fetch(`http://86.181.239.223:8000/image_capture/images/${selectedImage.id}/delete`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
@@ -54,6 +61,7 @@ const Gallery = () => {
           setImages(images.filter((image) => image.id !== selectedImage.id));
           // Close the modal or larger view
           setSelectedImage(null);
+          toast.success("Photo successfully deleted!");
         } else {
           console.error('Failed to delete the image');
         }
@@ -65,19 +73,24 @@ const Gallery = () => {
 
   return (
     <div>
-      <div className="gallery">
-        {images.map((image, index) => (
-          <img key={index} src={image.image_url} alt="Gallery" onClick={() => handleImageClick(image)} />
-        ))}
-      </div>
-
-      {selectedImage && (
-        <div className="modal" onClick={handleCloseModal}>
-          <img src={selectedImage.image_url} alt="Full Size" />
-          {selectedImage.material_tag && <p className="tag">{selectedImage.material_tag}</p>}
-          <button onClick={handleDeleteImage}>Delete Image</button> {/* Add this button */}
+      <div className='camera-wrapper'>
+        <div className="gallery">
+          {images.map((image, index) => (
+            <img key={index} src={image.image_url} alt="Gallery" onClick={() => handleImageClick(image)} />
+          ))}
         </div>
-      )}
+
+        {selectedImage && (
+          <div className="PreviewModal" onClick={handleCloseModal}>
+            <img src={selectedImage.image_url} alt="Full Size" />
+            {selectedImage.material_tag && <p className="tag">{selectedImage.material_tag}</p>}
+            <button onClick={handleDeleteImage} className="delete-button">
+              <FontAwesomeIcon icon={faTimesCircle} color="red" size="3x" />
+            </button>
+
+          </div>
+        )}
+      </div>
     </div>
   );
 };
