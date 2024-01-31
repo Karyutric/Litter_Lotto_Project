@@ -4,6 +4,8 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
+const serverBaseUrl = 'https://litter-lotto-py-e1a362be7b85.herokuapp.com';
+
 const UserSettings = () => {
   const [userInfo, setUserInfo] = useState({
     first_name: '',
@@ -22,7 +24,7 @@ const UserSettings = () => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('accessToken');
-        const response = await fetch('http://86.181.239.223:8000/image_capture/user/current/', {
+        const response = await fetch('${serverBaseUrl}/image_capture/user/current/', {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
@@ -69,7 +71,7 @@ const UserSettings = () => {
 
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('http://86.181.239.223:8000/image_capture/user/change-password/', {
+      const response = await fetch('${serverBaseUrl}/image_capture/user/change-password/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

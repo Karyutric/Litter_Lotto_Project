@@ -8,7 +8,8 @@ import './adminGallery.css'
 
 
 
-const serverBaseUrl = 'http://86.181.239.223:8000';
+const serverBaseUrl = 'https://litter-lotto-py-e1a362be7b85.herokuapp.com';
+
 
 const AdminGallery = () => {
     const [images, setImages] = useState([]);
@@ -26,7 +27,7 @@ const AdminGallery = () => {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await fetch(`http://86.181.239.223:8000/image_capture/users/${userId}/images`, {
+            const response = await fetch(`${serverBaseUrl}/image_capture/users/${userId}/images`, {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + adminAccessToken

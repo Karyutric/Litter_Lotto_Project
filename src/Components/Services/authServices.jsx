@@ -1,4 +1,5 @@
-const API_URL = "http://86.181.239.223:8000/image_capture/";
+const API_URL = "https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/";
+
 
 export const register = async (userData) => {
     const response = await fetch(API_URL + 'register/', {
