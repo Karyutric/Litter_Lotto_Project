@@ -1,8 +1,10 @@
+const API_URL = "https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/";
+
 export const sendDataToServer = async (data) => {
     const token = localStorage.getItem('accessToken'); // Retrieve the token from local storage
   
     try {
-      const response = await fetch('https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/create_image_location/', {
+      const response = await fetch(API_URL + 'create_image_location/', {
         method: 'POST',
         headers: {
           // Include the token in the Authorization header

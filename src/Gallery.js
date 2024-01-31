@@ -4,6 +4,8 @@ import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+const API_URL = "https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/";
+
 
 const Gallery = () => {
   const [images, setImages] = useState([]);
@@ -17,7 +19,7 @@ const Gallery = () => {
     try {
       const token = localStorage.getItem('accessToken'); // Retrieve the token from local storage
 
-      const response = await fetch('https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/images/', {
+      const response = await fetch(API_URL + 'images/', {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}` // Include the token in the Authorization header
@@ -48,7 +50,7 @@ const Gallery = () => {
   const handleDeleteImage = async () => {
     if (selectedImage) {
       try {
-        const response = await fetch(`https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/images/${selectedImage.id}/delete`, {
+        const response = await fetch(API_URL + 'images/${selectedImage.id}/delete', {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
