@@ -8,9 +8,6 @@ import './adminGallery.css'
 
 
 
-const serverBaseUrl = 'https://litter-lotto-py-e1a362be7b85.herokuapp.com';
-
-
 const AdminGallery = () => {
     const [images, setImages] = useState([]);
     const [selectedImage, setSelectedImage] = useState(null);
@@ -27,7 +24,7 @@ const AdminGallery = () => {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await fetch(`${serverBaseUrl}/image_capture/users/${userId}/images`, {
+            const response = await fetch(`https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/users/${userId}/images`, {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + adminAccessToken
@@ -40,7 +37,7 @@ const AdminGallery = () => {
                 const updatedImagesData = imagesData.map(image => {
                 return {
                     ...image,
-                    image_url: image.image_path ? `${serverBaseUrl}${image.image_path}` : null
+                    image_url: image.image_path ? `https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/${image.image_path}` : null
                 };
             });
             setImages(updatedImagesData);
@@ -67,7 +64,7 @@ const AdminGallery = () => {
     const handleDeleteImage = async () => {
         if (selectedImage) {
             try {
-                const response = await fetch(`${serverBaseUrl}/image_capture/images/${selectedImage.id}/delete`, {
+                const response = await fetch(`https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/${selectedImage.id}/delete`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${adminAccessToken}`
