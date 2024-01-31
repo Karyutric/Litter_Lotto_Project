@@ -13,6 +13,9 @@ export const sendDataToServer = async (data) => {
       });
   
       if (!response.ok) {
+        // Retrieve and log the response body for more details
+        const errorBody = await response.text(); // or response.json() if the response is in JSON format
+        console.error(`HTTP error! status: ${response.status}, body: ${errorBody}`);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       return response;
