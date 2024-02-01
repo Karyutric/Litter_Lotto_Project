@@ -23,7 +23,7 @@ const UserSettings = () => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('accessToken');
-        const response = await fetch(API_URL + 'user/current/', {
+        const response = await fetch('https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/user/current/', {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
