@@ -99,7 +99,7 @@ const UserSettings = () => {
       <div className='userSettings-wrapper'>
         <div className="text-center mb-5">
           <h1 className="mb-4">{`${userInfo.first_name} ${userInfo.surname}`}</h1>
-          <p className="text-muted h4 font-weight-bold">Member Since:</p>
+          <p className="text-muted h4 font-weight-bold">Member Since: 123</p>
           <p className="text-muted h5 font-weight-bold">{userInfo.joinedDate}</p>
         </div>
 
