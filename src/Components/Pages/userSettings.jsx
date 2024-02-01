@@ -3,8 +3,6 @@ import './userSettings.css'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const API_URL = "https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/";
-
 const UserSettings = () => {
   const [userInfo, setUserInfo] = useState({
     first_name: '',

@@ -4,7 +4,6 @@ import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const API_URL = "https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/";
 
 
 const Gallery = () => {

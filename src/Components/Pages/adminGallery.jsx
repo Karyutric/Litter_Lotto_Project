@@ -6,8 +6,6 @@ import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import 'react-toastify/dist/ReactToastify.css';
 import './adminGallery.css'
 
-const API_URL = "https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/";
-
 const AdminGallery = () => {
     const [images, setImages] = useState([]);
     const [selectedImage, setSelectedImage] = useState(null);
@@ -24,7 +22,7 @@ const AdminGallery = () => {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await fetch(API_URL + 'users/${userId}/images', { 
+            const response = await fetch('https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/users/${userId}/images', { 
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + adminAccessToken
@@ -37,7 +35,7 @@ const AdminGallery = () => {
                 const updatedImagesData = imagesData.map(image => {
                 return {
                     ...image,
-                    image_url: image.image_path ? `${API_URL}${image.image_path}` : null
+                    image_url: image.image_path ? 'https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/${image.image_path}' : null
                 };
             });
             setImages(updatedImagesData);
@@ -64,7 +62,7 @@ const AdminGallery = () => {
     const handleDeleteImage = async () => {
         if (selectedImage) {
             try {
-                const response = await fetch(`${API_URL}${selectedImage.id}/delete`, {
+                const response = await fetch('https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/${selectedImage.id}/delete', {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${adminAccessToken}`

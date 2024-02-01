@@ -4,8 +4,6 @@ import { toast } from 'react-toastify';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './adminPage.css'
 
-const API_URL = "https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/";
-
 
 const AdminPage = () => {
     const [users, setUsers] = useState([]);
@@ -22,7 +20,7 @@ const AdminPage = () => {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await fetch(API_URL + 'users/', {
+            const response = await fetch('https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/users/', {
                 method: 'GET',
                 headers: { 'Authorization': 'Bearer ' + adminAccessToken }
             });
@@ -46,7 +44,7 @@ const AdminPage = () => {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await fetch(API_URL + 'users/${userId}/delete', {
+            const response = await fetch('https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/users/${userId}/delete', {
                 method: 'DELETE',
                 headers: { 'Authorization': 'Bearer ' + adminAccessToken }
             });
