@@ -22,7 +22,7 @@ const AdminGallery = () => {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await fetch('https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/users/${userId}/images', { 
+            const response = await fetch(`https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/users/${userId}/images`, { 
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + adminAccessToken
