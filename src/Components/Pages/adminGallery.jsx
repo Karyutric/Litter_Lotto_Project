@@ -35,7 +35,7 @@ const AdminGallery = () => {
                 const updatedImagesData = imagesData.map(image => {
                 return {
                     ...image,
-                    image_url: image.image_path ? 'https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/${image.image_path}' : null
+                    image_url: image.image_path ? `https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/${image.image_path}` : null
                 };
             });
             setImages(updatedImagesData);
@@ -62,7 +62,7 @@ const AdminGallery = () => {
     const handleDeleteImage = async () => {
         if (selectedImage) {
             try {
-                const response = await fetch('https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/${selectedImage.id}/delete', {
+                const response = await fetch(`https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/${selectedImage.id}/delete`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${adminAccessToken}`
@@ -95,9 +95,8 @@ const AdminGallery = () => {
                             src={image.image_url} 
                             alt="User Content" 
                             className="gallery-image"
-                            onClick={() => handleImageClick(image)} // Add click handler
+                            onClick={() => handleImageClick(image)} 
                         />
-                        {/* Delete button removed from here */}
                     </div>
                 ))}
             </div>

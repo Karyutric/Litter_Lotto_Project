@@ -44,7 +44,7 @@ const AdminPage = () => {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await fetch('https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/users/${userId}/delete', {
+            const response = await fetch(`https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/users/${userId}/delete`, {
                 method: 'DELETE',
                 headers: { 'Authorization': 'Bearer ' + adminAccessToken }
             });

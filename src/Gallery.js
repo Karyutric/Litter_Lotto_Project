@@ -49,7 +49,7 @@ const Gallery = () => {
   const handleDeleteImage = async () => {
     if (selectedImage) {
       try {
-        const response = await fetch('https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/images/${selectedImage.id}/delete', {
+        const response = await fetch(`https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/images/${selectedImage.id}/delete`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
