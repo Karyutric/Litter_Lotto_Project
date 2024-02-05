@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
+import { sendDataToServer } from './utils';
 import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from './firebase'; // Make sure to export `storage` from your `firebase.js`
 import "./camera.css";
