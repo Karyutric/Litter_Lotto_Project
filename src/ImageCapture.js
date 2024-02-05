@@ -34,6 +34,7 @@ const ImageCapture = () => {
     };
 
     const handleCapture = async () => {
+      if (videoRef.current && videoRef.current.videoWidth && videoRef.current.videoHeight) {
         const canvas = document.createElement('canvas');
         canvas.width = videoRef.current.videoWidth;
         canvas.height = videoRef.current.videoHeight;
@@ -42,6 +43,9 @@ const ImageCapture = () => {
         const capturedImageSrc = canvas.toDataURL('image/jpeg');
         setImageSrc(capturedImageSrc);
         setShowPreview(true);
+      } else {
+        console.error('Video element is not ready');
+      }
 
         if ('geolocation' in navigator) {
             navigator.geolocation.getCurrentPosition((position) => {
@@ -51,10 +55,18 @@ const ImageCapture = () => {
         } else {
             console.error('Geolocation is not supported in this browser.');
         }
+        
     };
 
     const handleAcceptPhoto = async () => {
       try {
+          // Ensure there's an image to process
+          if (!imageSrc) {
+              console.error("No image captured.");
+              toast.error("No image captured.");
+              return;
+          }
+  
           // Convert data URL to blob
           const response = await fetch(imageSrc);
           const blob = await response.blob();
@@ -69,29 +81,31 @@ const ImageCapture = () => {
           // Get the image URL from Firebase Storage
           const downloadURL = await getDownloadURL(snapshot.ref);
           
-          // Here, send the downloadURL along with other data to your Django backend
-          const formData = new FormData();
-          formData.append('image_url', downloadURL);
-          formData.append('material_tag', materialTag);
-          formData.append('latitude', latitude);
-          formData.append('longitude', longitude);
+          // Prepare the data to send to your Django backend
+          const dataToSend = {
+              image_url: downloadURL,
+              material_tag: materialTag,
+              latitude: latitude,
+              longitude: longitude
+          };
   
-          // Replace this with the actual function to send data to your Django backend
-          const responseBackend = await sendDataToServer(formData);
+          // Send the image URL and other data to your Django backend
+          const responseBackend = await sendDataToServer(dataToSend);
   
           if (!responseBackend.ok) {
-            throw new Error('Failed to store image data in the backend.');
+              const errorText = await responseBackend.text();
+              throw new Error(`Failed to store image data in the backend. Server responded with: ${errorText}`);
           }
   
           toast.success("Photo successfully added and stored!");
-          // Reset your component state as needed
+          // Reset the component state
           setShowPreview(false);
           setImageSrc(null);
           setMaterialTag('');
-          initCamera();
+          // Optionally reinitialize the camera
       } catch (error) {
           console.error('Error handling the photo:', error);
-          toast.error("Failed to upload photo.");
+          toast.error(`Failed to upload photo: ${error.message}`);
       }
   };
   
