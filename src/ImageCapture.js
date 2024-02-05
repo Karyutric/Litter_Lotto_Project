@@ -19,6 +19,11 @@ const ImageCapture = () => {
     }, []);
 
     const initCamera = async () => {
+      // Check if mediaDevices and getUserMedia are available
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      console.error("mediaDevices API or getUserMedia method not available.");
+      return;
+    }
         try {
             const constraints = { video: { facingMode: 'environment' } };
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
@@ -49,43 +54,47 @@ const ImageCapture = () => {
     };
 
     const handleAcceptPhoto = async () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = videoRef.current.videoWidth;
-        canvas.height = videoRef.current.videoHeight;
-        const context = canvas.getContext('2d');
-        context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-        canvas.toBlob(async (blob) => {
-            try {
-                const fileName = `captured-image-${Date.now()}.jpg`;
-                const imageStorageRef = storageRef(storage, `images/${fileName}`);
-                
-                const snapshot = await uploadBytes(imageStorageRef, blob);
-                
-                const downloadURL = await getDownloadURL(snapshot.ref);
-                
-                const formData = new FormData();
-                formData.append('image_url', downloadURL);
-                formData.append('material_tag', materialTag);
-                formData.append('latitude', latitude);
-                formData.append('longitude', longitude);
-
-                const response = await sendDataToServer(formData);
-
-                if (!response.ok) {
-                    throw new Error('Failed to store image data in the backend.');
-                }
-
-                toast.success("Photo successfully added and stored!");
-                setShowPreview(false);
-                setImageSrc(null);
-                setMaterialTag('');
-                initCamera();
-            } catch (error) {
-                console.error('Error handling the photo:', error);
-                toast.error("Failed to upload photo.");
-            }
-        }, 'image/jpeg');
-    };
+      try {
+          // Convert data URL to blob
+          const response = await fetch(imageSrc);
+          const blob = await response.blob();
+          
+          // Define a file name based on the current timestamp
+          const fileName = `captured-image-${Date.now()}.jpg`;
+          const imageStorageRef = storageRef(storage, `images/${fileName}`);
+          
+          // Upload the image blob to Firebase Storage
+          const snapshot = await uploadBytes(imageStorageRef, blob);
+          
+          // Get the image URL from Firebase Storage
+          const downloadURL = await getDownloadURL(snapshot.ref);
+          
+          // Here, send the downloadURL along with other data to your Django backend
+          const formData = new FormData();
+          formData.append('image_url', downloadURL);
+          formData.append('material_tag', materialTag);
+          formData.append('latitude', latitude);
+          formData.append('longitude', longitude);
+  
+          // Replace this with the actual function to send data to your Django backend
+          const responseBackend = await sendDataToServer(formData);
+  
+          if (!responseBackend.ok) {
+            throw new Error('Failed to store image data in the backend.');
+          }
+  
+          toast.success("Photo successfully added and stored!");
+          // Reset your component state as needed
+          setShowPreview(false);
+          setImageSrc(null);
+          setMaterialTag('');
+          initCamera();
+      } catch (error) {
+          console.error('Error handling the photo:', error);
+          toast.error("Failed to upload photo.");
+      }
+  };
+  
 
     const handleRetakePhoto = () => {
         setShowPreview(false);
