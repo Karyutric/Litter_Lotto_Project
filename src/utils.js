@@ -1,4 +1,4 @@
-export const sendDataToServer = async ({image_url, material_tag, latitude, longitude}) => {
+export const sendDataToServer = async ({data}) => {
   const token = localStorage.getItem('accessToken'); // Retrieve the token from local storage
 
   try {
