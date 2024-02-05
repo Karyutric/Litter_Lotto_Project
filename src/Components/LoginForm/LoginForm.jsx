@@ -8,13 +8,11 @@ import { login as loginService } from '../Services/authServices';
 const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
     const navigate = useNavigate();
     const { login } = useContext(AuthContext); // Using login from AuthContext
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError('');
         const userData = { username, password };
         try {
             const response = await loginService(userData);
@@ -22,7 +20,9 @@ const LoginForm = () => {
                 const data = await response.json();
                 handleSuccessfulLogin(data);
             } else {
-                setError('Incorrect username or password.');
+                console.error('Login failed with status:', response.status);
+                const errorData = await response.json();
+                console.error('Error details:', errorData);
             }
         } catch (error) {
             console.error('Error during login:', error.message);
@@ -47,14 +47,14 @@ const LoginForm = () => {
 
     return (
         <div className="login-page">
-           
+            {/* Logo container */}
             <div className="logo-container">
                 <img src="./App_logo.png" alt="Logo" />
             </div>
-
+    
+            {/* Form container */}
             <div className="form-container">
-                {error && <div className="alert alert-danger" role="alert">{error}</div>}
-                <div className='login-wrapper'>
+                <div className='wrapper'>
                     <form onSubmit={handleSubmit}>
                         <h1>Login</h1>
                         <div className="input-box">
@@ -72,6 +72,9 @@ const LoginForm = () => {
                                    value={password}
                                    onChange={(e) => setPassword(e.target.value)}/>
                             <FaLock className='icon'/>
+                        </div>
+                        <div className="forgot">
+                            <Link to="#">Forgot Password</Link>
                         </div>
                         <button type="submit">Login</button>
                         <div className="register-link">

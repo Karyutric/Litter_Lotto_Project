@@ -97,26 +97,26 @@ const MobileImageCapture = () => {
   };
 
   return (
-    <div className="camera-container">
-        {!showPreview ? (
-          <>
-            <video className="video-element" autoPlay playsInline ref={videoRef} />
-            <button className="button" onClick={handleCapture}>Capture Image</button>
-          </>
-        ) : (
-          <>
-            {imageSrc && <img src={imageSrc} alt="Captured" className="video-element" />}
-            <input
-              type="text"
-              value={materialTag}
-              onChange={(e) => setMaterialTag(e.target.value)}
-              placeholder="Enter material tag"
-              className="material-tag-input"
-            />
-            <button className="button" onClick={handleAcceptPhoto}>Accept Photo</button>
-            <button className="button" onClick={handleRetakePhoto}>Retake Photo</button>
-          </>
-        )}
+    <div className="container">
+      {!showPreview ? (
+        <>
+          <video className="video-element" autoPlay playsInline ref={videoRef} />
+          <button className="button" onClick={handleCapture}>Capture Image</button>
+        </>
+      ) : (
+        <>
+          {imageSrc && <img src={imageSrc} alt="Captured" className="video-element" />}
+          <input
+            type="text"
+            value={materialTag}
+            onChange={(e) => setMaterialTag(e.target.value)}
+            placeholder="Enter material tag"
+            className="material-tag-input"
+          />
+          <button className="button" onClick={handleAcceptPhoto}>Accept Photo</button>
+          <button className="button" onClick={handleRetakePhoto}>Retake Photo</button>
+        </>
+      )}
     </div>
   );
 };

@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './adminPage.css'
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 
 const AdminPage = () => {
@@ -20,7 +17,11 @@ const AdminPage = () => {
         setIsLoading(true);
         setError(null);
         try {
+<<<<<<< HEAD
             const response = await fetch('https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/users/', {
+=======
+            const response = await fetch('http://86.173.58.38:8000/image_capture/users/', {
+>>>>>>> parent of 4b9f6a3 (All design aspects completed)
                 method: 'GET',
                 headers: { 'Authorization': 'Bearer ' + adminAccessToken }
             });
@@ -44,13 +45,16 @@ const AdminPage = () => {
         setIsLoading(true);
         setError(null);
         try {
+<<<<<<< HEAD
             const response = await fetch(`https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/users/${userId}/delete`, {
+=======
+            const response = await fetch(`http://86.173.58.38:8000/image_capture/users/${userId}/delete`, {
+>>>>>>> parent of 4b9f6a3 (All design aspects completed)
                 method: 'DELETE',
                 headers: { 'Authorization': 'Bearer ' + adminAccessToken }
             });
             if (response.ok) {
                 setUsers(users.filter(user => user.id !== userId));
-                toast.success("User successfully removed!");
             } else {
                 setError('Failed to remove user');
             }
@@ -61,27 +65,18 @@ const AdminPage = () => {
     };
 
     return (
-        <div className="container py-5">
-            <div className='admin-wrapper'>
-                <h1 className="mb-4">Admin Dashboard</h1>
-                {isLoading && <div className="text-center"><div className="spinner-border" role="status"><span className="sr-only">Loading...</span></div></div>}
-                {error && <div className="alert alert-danger" role="alert">{error}</div>}
-                <div className="row row-cols-1 row-cols-md-3 g-4">
-                    {users.map(user => (
-                        <div className="col" key={user.id}>
-                            <div className="card h-100 d-flex flex-column justify-content-between">
-                                <div className="card-body special-card ">
-                                    <h5 className="card-title">{user.username}</h5>
-                                </div>
-                                <div className="card-footer">   
-                                    <button className="btn btn-danger mb-2 w-100" onClick={() => removeUser(user.id)}>Remove User</button>
-                                    <button className="btn btn-primary w-100" onClick={() => navigateToUserImages(user.id)}>View Images</button>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>   
+        <div>
+            <h1>Admin Dashboard</h1>
+            {isLoading && <p>Loading...</p>}
+            {error && <p>Error: {error}</p>}
+            <div>
+                {users.map(user => (
+                    <div key={user.id}>
+                        <p onClick={() => navigateToUserImages(user.id)} style={{ cursor: 'pointer' }}>{user.username}</p>
+                        <button onClick={() => removeUser(user.id)}>Remove User</button>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };

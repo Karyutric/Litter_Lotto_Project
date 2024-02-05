@@ -1,23 +1,11 @@
-
-.camera-container {
+/* Style for the main container */
+.container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 70vh;
+  height: 100vh;
   background-color: transparent;
-  margin-bottom: 20px;
-}
-
-.camera-wrapper {
-  width: 100%;
-  padding: 20px;
-  background: transparent;
-  border: 2px solid rgb(255, 255, 255, .2);
-  backdrop-filter: blur(30px);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  color: #000000;
-  border-radius: 10px;
 }
 
 /* Style for the video element */
@@ -46,8 +34,6 @@
   margin: 10px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  display: inline-block;
-  margin-bottom: 20px;
 }
 
 .button:hover {
@@ -86,13 +72,13 @@ margin-top: -5px; /* Position the tag closer to the image */
 }
 
 /* Style for the modal */
-.PreviewModal {
+.modal {
 position: fixed;
 top: 0;
 left: 0;
 width: 100%;
 height: 100%;
-background-color: rgba(0, 0, 0, 0.95); 
+background-color: rgba(0, 0, 0, 0.75); /* Adjust opacity for less visibility */
 display: flex;
 align-items: center;
 justify-content: center;
@@ -100,7 +86,7 @@ z-index: 1000; /* Ensure modal is above all other content */
 }
 
 /* Style for the modal image */
-.PreviewModal img {
+.modal img {
 max-width: 80%;
 max-height: 80%;
 box-shadow: 0 0 10px #000;
@@ -109,21 +95,11 @@ border-radius: 10px;
 
 /* Ensure the modal image does not exceed the viewport */
 @media (max-width: 768px) {
-  .PreviewModal img {
-    max-width: 80%;
-    max-height: 80%;
-  }
-
-  .camera-container {
-    height: auto; /* Adjust the height of the camera container */
-    margin-bottom: 10px; /* Add some space below the container */
-  }
-
-  .button {
-    margin-bottom: 10px; /* Add some space below the buttons */
-  }
+.modal img {
+  max-width: 90%;
+  max-height: 90%;
 }
-
+}
 
 .tag {
   color: white;
@@ -134,26 +110,5 @@ border-radius: 10px;
   bottom: 10px;
   right: 10px;
 }
-
-.gallery .PreviewModal {
-  display: flex !important; /* Use !important sparingly */
-}
-
-.delete-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  position: absolute; 
-  top: 10px; 
-  right: 60px; 
-}
-
-
-.delete-button .fa-times-circle {
-  font-size: 24px; 
-  color: red;
-}
-
-
 
   
