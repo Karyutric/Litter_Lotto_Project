@@ -8,10 +8,13 @@ import Dashboard from './Components/Pages/dashboard';
 import AdminPage from './Components/Pages/adminPage';
 import AdminGallery from './Components/Pages/adminGallery';
 import UserSettings from './Components/Pages/userSettings';
+import About from './Components/Pages/About';
 import NavBar from './Components/Services/NavBar';
+import AdminNavBar from './Components/Services/AdminNavBar';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
 
 
 const AppContent = () => {
@@ -22,12 +25,13 @@ const AppContent = () => {
 
   return (
     <>
-      {showNavBar && <NavBar />}
+      {showNavBar && (isAdmin ? <AdminNavBar /> : <NavBar />)}
       <div className="main-content">
         <Routes>
           <Route path="/" element={<LoginForm />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
+          
           {/* Conditional rendering based on role */}
           {isAdmin ? (
             // Routes available only to admin users
@@ -41,6 +45,7 @@ const AppContent = () => {
               <Route path="/camera-gallery" element={<CameraGallery />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/userSettings" element={<UserSettings />} />
+              <Route path="/about" element={<About />} />
             </>
           )}
         </Routes>
@@ -61,8 +66,3 @@ const App = () => {
 };
 
 export default App;
-
-
-
-
-

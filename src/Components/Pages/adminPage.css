@@ -1,0 +1,15 @@
+.admin-wrapper {
+    width: 100%;
+    padding: 20px;
+    background: transparent;
+    border: 2px solid rgb(255, 255, 255, .2);
+    backdrop-filter: blur(30px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    color: #000000;
+    border-radius: 10px;
+  }
+
+  .special-card {
+    backdrop-filter: blur(5px);
+    background-color: rgba(255, 255, 255, .15);
+  }
