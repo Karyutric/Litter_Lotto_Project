@@ -1,34 +1,37 @@
-export const sendDataToServer = async ({image_url, material_tag, latitude, longitude}) => {
-    const token = localStorage.getItem('accessToken'); // Retrieve the token from local storage
+export const sendDataToServer = async (formData) => {
+  const token = localStorage.getItem('accessToken'); // Retrieve the token from local storage
+  const serverBaseUrl = 'http://86.174.135.135:8000';
 
-    try {
-      // Assuming your backend expects a JSON payload
-      const response = await fetch('https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/create_image_location/', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json', // Since we're sending JSON now
-        },
-        body: JSON.stringify({
-          image_url, // URL from Firebase
-          material_tag,
-          latitude,
-          longitude,
-        }),
+  try {
+      const response = await fetch(`${serverBaseUrl}/image_capture/create_image_location/`, {
+          method: 'POST',
+          headers: {
+              // 'Content-Type' header is not needed; it will be set automatically when sending FormData
+              'Authorization': `Bearer ${token}`,
+          },
+          body: formData,
       });
 
       if (!response.ok) {
-        // Retrieve and log the response body for more details
-        const errorBody = await response.json(); // Assuming error response is also in JSON
-        console.error(`HTTP error! status: ${response.status}, body: ${errorBody.detail || errorBody}`);
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json(); // Assuming you want to parse and return the JSON response
-    } catch (error) {
-      console.error('Error sending data:', error);
-      throw error; // Rethrow or handle error appropriately
+        // Attempt to parse the error body for detailed error message
+        try {
+            const errorBody = await response.json(); // Attempt to parse JSON error response
+            console.error(`HTTP error! status: ${response.status}, body: `, errorBody);
+            throw new Error(`HTTP error! status: ${response.status}, details: ${JSON.stringify(errorBody)}`);
+        } catch (parseError) {
+            // If parsing fails, log the original response status and statusText
+            console.error(`HTTP error! status: ${response.status}, statusText: ${response.statusText}`);
+            throw new Error(`HTTP error! status: ${response.status}, statusText: ${response.statusText}`);
+        }
     }
+
+    return await response.json(); // Parse and return the successful JSON response
+} catch (error) {
+    console.error('Error sending data:', error);
+    throw error; // Re-throw to be handled by caller
+}
 };
+
 
   
 

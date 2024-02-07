@@ -8,7 +8,7 @@ import './adminGallery.css'
 
 
 
-const serverBaseUrl = 'http://86.181.239.223:8000';
+const serverBaseUrl = 'http://86.174.135.135:8000';
 
 const AdminGallery = () => {
     const [images, setImages] = useState([]);
@@ -26,7 +26,7 @@ const AdminGallery = () => {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await fetch(`http://86.181.239.223:8000/image_capture/users/${userId}/images`, {
+            const response = await fetch(`${serverBaseUrl}/image_capture/users/${userId}/images`, {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + adminAccessToken

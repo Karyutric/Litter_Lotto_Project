@@ -49,26 +49,28 @@ const MobileImageCapture = () => {
   const handleAcceptPhoto = async () => {
     const imageBlob = await (await fetch(imageSrc)).blob();
     const formData = new FormData();
-    formData.append('image_file', imageBlob, `captured-image-${Date.now()}.jpg`);
+    formData.append('image_path', imageBlob, `Image-${Date.now()}.jpg`); // Ensure this matches backend expectation
     formData.append('material_tag', materialTag);
-    formData.append('latitude', latitude);
-    formData.append('longitude', longitude);
+    formData.append('latitude', latitude.toString());
+    formData.append('longitude', longitude.toString());
 
-    const response = await sendDataToServer(formData);
-
-    if (!response.ok) {
-      console.error('Error sending data:', response.statusText);
-    } else {
-      toast.success("Photo successfully added!");
-      setTimeout(() => {
+    try {
+      // eslint-disable-next-line
+        const data = await sendDataToServer(formData);
+        toast.success("Photo successfully added!");
+        // Reset component state and UI as needed
         setShowPreview(false);
         setImageSrc(null);
         setMaterialTag('');
         initCamera();
-        window.location.reload();  
-      }, 2000); // 2 second delay
+        setTimeout(() => {
+          window.location.reload();  
+      }, 2000);
+    } catch (error) {
+        console.error('Error sending data:', error);
+        toast.error("Failed to add photo.");
     }
-  };
+};
 
   const handleRetakePhoto = () => {
     setShowPreview(false);
