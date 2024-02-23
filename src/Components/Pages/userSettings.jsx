@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+<<<<<<< HEAD
 import './userSettings.css'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -69,7 +70,6 @@ const UserSettings = () => {
     const payload = {
       current_password: currentPassword,
       new_password: newPassword,
-      
     };
 
     try {
@@ -96,62 +96,44 @@ const UserSettings = () => {
       setCurrentPassword('');
       setNewPassword('');
       setConfirmNewPassword('');
-      toast.success("Password successfully changed!");
     } catch (error) {
       console.error('Error changing password:', error.message);
     }
   };
 
   return (
-    <div className="container py-5">
-      <div className='userSettings-wrapper'>
-        <div className="text-center mb-5">
-          <h1 className="mb-4">{`${userInfo.first_name} ${userInfo.surname}`}</h1>
-          <p className="text-muted h4 font-weight-bold">Member Since:</p>
-          <p className="text-muted h5 font-weight-bold">{userInfo.joinedDate}</p>
-        </div>
+    <div>
+      <h1>User Settings</h1>
+      <p>Name: {userInfo.first_name} {userInfo.surname}</p>
+      <p>Username: {userInfo.username}</p>
+      <p>Member Since: {userInfo.joinedDate}</p>
 
-        <div className="card">
-          <div className="card-body">
-            {error && <div className="alert alert-danger" role="alert">{error}</div>} 
+      {error && <p className="error-message">{error}</p>} 
 
-            <form onSubmit={handlePasswordChange} className="mb-3">
-              <div className="form-group mb-3">
-                <input
-                  type="password"
-                  className="form-control"
-                  placeholder="Current Password"
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                />
-              </div>
-              <div className="form-group mb-3">
-                <input
-                  type="password"
-                  className="form-control"
-                  placeholder="New Password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                />
-              </div>
-              <div className="form-group mb-3">
-                <input
-                  type="password"
-                  className="form-control"
-                  placeholder="Confirm New Password"
-                  value={confirmNewPassword}
-                  onChange={(e) => setConfirmNewPassword(e.target.value)}
-                />
-              </div>
-              <button type="submit" className="btn btn-primary w-100">Change Password</button>
-            </form>
-          </div>
-        </div>
-      </div>
+      <form onSubmit={handlePasswordChange}>
+        <input
+          type="password"
+          placeholder="Current Password"
+          value={currentPassword}
+          onChange={(e) => setCurrentPassword(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="New Password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Confirm New Password"
+          value={confirmNewPassword}
+          onChange={(e) => setConfirmNewPassword(e.target.value)}
+        />
+        <button type="submit">Change Password</button>
+      </form>
     </div>
   );
 };
 
 export default UserSettings;
-
 

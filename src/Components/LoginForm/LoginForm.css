@@ -22,29 +22,29 @@
     margin:  30px 0;
  }
 
-.input-box input {
-   width: 100%;
-   height: 100%;
-   background: transparent;
-   border: 2px solid rgba(0, 0, 0, 0.2);
-   outline: none;
-   border-radius: 40px;
-   font-size: 16px;
-   color: #000000;
-   padding: 20px 45px 20px 20px;
-}
+ .input-box input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    outline: none;
+    border-radius: 40px;
+    font-size: 16px;
+    color: #000000;
+    padding: 20px 45px 20px 20px;
+ }
 
-.input-box input::placeholder {
-   color: #000000;
-}
+ .input-box input::placeholder {
+    color: #000000;
+ }
 
-.input-box .icon {
-   position: absolute;
-   right: 20px;
-   top: 40%;
-   transform: translate(-50%);
-   font-size: 16px;
-}
+ .input-box .icon {
+    position: absolute;
+    right: 20px;
+    top: 40%;
+    transform: translate(-50%);
+    font-size: 16px;
+ }
 
  .wrapper .forgot {
     display:  flex;
@@ -53,14 +53,14 @@
     margin: -15px 0 15px;
  }
 
-.forgot {
-   accent-color: #000000;
-   margin-right: 4px;
-}
+ .forgot {
+    accent-color: #000000;
+    margin-right: 4px;
+ }
 
-.forgot a:hover {
-   text-decoration: underline;
-}
+ .forgot a:hover {
+    text-decoration: underline;
+ }
 
  .wrapper button {
     width: 100%;
@@ -82,20 +82,20 @@
     margin: 20px 0 15px;
  }
 
-.register-link p a {
-   color: #000000;
-   text-decoration: none;
-   font-weight: 600;
-}
+ .register-link p a {
+    color: #000000;
+    text-decoration: none;
+    font-weight: 600;
+ }
 
-.register-link p a:hover {
-   text-decoration: underline;
-}
+ .register-link p a:hover {
+    text-decoration: underline;
+ }
 
-.login-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+ .login-page {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
 }
 
 .logo-container {
@@ -104,6 +104,6 @@
 }
 
 .logo-container img {
-  width: 250px; /* Adjust the size as needed */
-  height: auto;
+   width: 250px; /* Adjust the size as needed */
+   height: auto;
 }

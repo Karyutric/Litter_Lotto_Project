@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+<<<<<<< HEAD
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,11 +13,10 @@ const serverBaseUrl = 'http://192.168.1.135:8000';
 
 const AdminGallery = () => {
     const [images, setImages] = useState([]);
-    const [selectedImage, setSelectedImage] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const adminAccessToken = localStorage.getItem('accessToken');
-    const { userId } = useParams(); 
+    const { userId } = useParams(); // Retrieve userId from URL parameters
 
     useEffect(() => {
         fetchUserImages(userId); // eslint-disable-next-line
@@ -43,7 +43,7 @@ const AdminGallery = () => {
                 const updatedImagesData = imagesData.map(image => {
                 return {
                     ...image,
-                    image_url: image.image_path ? `${serverBaseUrl}${image.image_path}` : null
+                    image_url: image.image_path ? `https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/${image.image_path}` : null
                 };
             });
             setImages(updatedImagesData);
@@ -57,6 +57,7 @@ const AdminGallery = () => {
         setIsLoading(false);
     };
 
+<<<<<<< HEAD
     
     const handleImageClick = (image) => {
         setSelectedImage(image);
@@ -70,7 +71,7 @@ const AdminGallery = () => {
     const handleDeleteImage = async () => {
         if (selectedImage) {
             try {
-                const response = await fetch(`${serverBaseUrl}/image_capture/images/${selectedImage.id}/delete`, {
+                const response = await fetch(`https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/${selectedImage.id}/delete`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${adminAccessToken}`
@@ -106,12 +107,12 @@ const AdminGallery = () => {
         setIsLoading(false);
     };
 
-
     return (
-        <div className='adminGallery-wrapper'>
+        <div>
             <h1>User Images</h1>
             {isLoading && <p>Loading...</p>}
             {error && <p>Error: {error}</p>}
+<<<<<<< HEAD
             <div className="gallery">
                 {images.map((image, index) => (
                     <div key={index} className="gallery-item">
@@ -131,15 +132,6 @@ const AdminGallery = () => {
                     </div>
                 ))}
             </div>
-
-            {selectedImage && (
-                <div className="PreviewModal" onClick={handleCloseModal}>
-                    <img src={selectedImage.image_url} alt="Full Size" />
-                    <button onClick={handleDeleteImage} className="delete-button">
-                        <FontAwesomeIcon icon={faTimesCircle} color="red" size="3x" />
-                    </button>
-                </div>
-            )}
         </div>
     );
 };

@@ -8,13 +8,11 @@ import { login as loginService } from '../Services/authServices';
 const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
     const navigate = useNavigate();
     const { login } = useContext(AuthContext); // Using login from AuthContext
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError('');
         const userData = { username, password };
         try {
             const response = await loginService(userData);
@@ -49,15 +47,14 @@ const LoginForm = () => {
 
     return (
         <div className="login-page">
-           
+            {/* Logo container */}
             <div className="logo-container">
                 <img src="./App_logo.png" alt="Logo" />
             </div>
     
             {/* Form container */}
             <div className="form-container">
-                {error && <div className="alert alert-danger" role="alert">{error}</div>}
-                <div className='login-wrapper'>
+                <div className='wrapper'>
                     <form onSubmit={handleSubmit}>
                         <h1>Login</h1>
                         <div className="input-box">

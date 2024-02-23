@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+<<<<<<< HEAD
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
@@ -24,8 +25,7 @@ const Gallery = () => {
       const response = await fetch('http://86.173.58.38:8000/image_capture/images/', {
 >>>>>>> parent of 4b9f6a3 (All design aspects completed)
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` // Include the token in the Authorization header
+          'Authorization': `Bearer ${token}` // No need for 'Content-Type': 'application/json' if no body is sent
         }
       });
 
@@ -41,12 +41,10 @@ const Gallery = () => {
   };
 
   const handleImageClick = (image) => {
-    console.log('Image clicked', image); // Debugging
     setSelectedImage(image);
   };
 
   const handleCloseModal = () => {
-    console.log('Closing modal'); // Debugging
     setSelectedImage(null);
   };
 
@@ -61,21 +59,17 @@ const Gallery = () => {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-            'Content-Type': 'application/json',
           },
         });
 
         if (response.ok) {
-          // Remove the image from the gallery view
           setImages(images.filter((image) => image.id !== selectedImage.id));
-          // Close the modal or larger view
           setSelectedImage(null);
-          toast.success("Photo successfully deleted!");
         } else {
-          console.error('Failed to delete the image');
+          toast.error("Failed to delete the image");
         }
       } catch (error) {
-        console.error('Error deleting image:', error);
+        toast.error("Error deleting image: " + error.message);
       }
     }
   };
@@ -117,3 +111,6 @@ const Gallery = () => {
 };
 
 export default Gallery;
+
+
+

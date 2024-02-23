@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { sendDataToServer } from './utils';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { sendDataToServer } from './utils';
+import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from './firebase'; // Make sure to export `storage` from your `firebase.js`
 import "./camera.css";
+import 'react-toastify/dist/ReactToastify.css';
+
+
 
 const MobileImageCapture = () => {
   const videoRef = useRef(null);
@@ -49,28 +53,26 @@ const MobileImageCapture = () => {
   const handleAcceptPhoto = async () => {
     const imageBlob = await (await fetch(imageSrc)).blob();
     const formData = new FormData();
-    formData.append('image_path', imageBlob, `Image-${Date.now()}.jpg`); // Ensure this matches backend expectation
+    formData.append('image_file', imageBlob, `captured-image-${Date.now()}.jpg`);
     formData.append('material_tag', materialTag);
-    formData.append('latitude', latitude.toString());
-    formData.append('longitude', longitude.toString());
+    formData.append('latitude', latitude);
+    formData.append('longitude', longitude);
 
-    try {
-      // eslint-disable-next-line
-        const data = await sendDataToServer(formData);
-        toast.success("Photo successfully added!");
-        // Reset component state and UI as needed
+    const response = await sendDataToServer(formData);
+
+    if (!response.ok) {
+      console.error('Error sending data:', response.statusText);
+    } else {
+      toast.success("Photo successfully added!");
+      setTimeout(() => {
         setShowPreview(false);
         setImageSrc(null);
         setMaterialTag('');
         initCamera();
-        setTimeout(() => {
-          window.location.reload();  
-      }, 2000);
-    } catch (error) {
-        console.error('Error sending data:', error);
-        toast.error("Failed to add photo.");
+        window.location.reload();  
+      }, 2000); // 2 second delay
     }
-};
+  };
 
   const handleRetakePhoto = () => {
     setShowPreview(false);
@@ -78,28 +80,33 @@ const MobileImageCapture = () => {
   };
 
   return (
-    <div className="camera-container">
-        {!showPreview ? (
-          <>
-            <video className="video-element" autoPlay playsInline ref={videoRef} />
-            <button className="button" onClick={handleCapture}>Capture Image</button>
-          </>
-        ) : (
-          <>
-            {imageSrc && <img src={imageSrc} alt="Captured" className="video-element" />}
-            <input
-              type="text"
-              value={materialTag}
-              onChange={(e) => setMaterialTag(e.target.value)}
-              placeholder="Enter material tag"
-              className="material-tag-input"
-            />
-            <button className="button" onClick={handleAcceptPhoto}>Accept Photo</button>
-            <button className="button" onClick={handleRetakePhoto}>Retake Photo</button>
-          </>
-        )}
+    <div className="container">
+      {!showPreview ? (
+        <>
+          <video className="video-element" autoPlay playsInline ref={videoRef} />
+          <button className="button" onClick={handleCapture}>Capture Image</button>
+        </>
+      ) : (
+        <>
+          {imageSrc && <img src={imageSrc} alt="Captured" className="video-element" />}
+          <input
+            type="text"
+            value={materialTag}
+            onChange={(e) => setMaterialTag(e.target.value)}
+            placeholder="Enter material tag"
+            className="material-tag-input"
+          />
+          <button className="button" onClick={handleAcceptPhoto}>Accept Photo</button>
+          <button className="button" onClick={handleRetakePhoto}>Retake Photo</button>
+        </>
+      )}
     </div>
   );
 };
 
 export default MobileImageCapture;
+
+
+
+
+
