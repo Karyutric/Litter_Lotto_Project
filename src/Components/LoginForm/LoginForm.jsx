@@ -22,9 +22,9 @@ const LoginForm = () => {
                 const data = await response.json();
                 handleSuccessfulLogin(data);
             } else {
-                setError('Incorrect username or password.');
-
-
+                console.error('Login failed with status:', response.status);
+                const errorData = await response.json();
+                console.error('Error details:', errorData);
             }
         } catch (error) {
             console.error('Error during login:', error.message);
@@ -53,8 +53,8 @@ const LoginForm = () => {
             <div className="logo-container">
                 <img src="./App_logo.png" alt="Logo" />
             </div>
-
-
+    
+            {/* Form container */}
             <div className="form-container">
                 {error && <div className="alert alert-danger" role="alert">{error}</div>}
                 <div className='login-wrapper'>
@@ -76,9 +76,9 @@ const LoginForm = () => {
                                    onChange={(e) => setPassword(e.target.value)}/>
                             <FaLock className='icon'/>
                         </div>
-
-
-
+                        <div className="forgot">
+                            <Link to="#">Forgot Password</Link>
+                        </div>
                         <button type="submit">Login</button>
                         <div className="register-link">
                             <p>Don't have an account? <Link to="/register">Register</Link></p>

@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './dashboard.css';
 
-const serverBaseUrl = 'http://31.104.89.199:8000';
+<<<<<<< HEAD
+const API_URL = "https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/";
 
 // Global initMap function defined outside the component
 window.initMap = () => {
@@ -57,7 +58,11 @@ const Dashboard = () => {
     const fetchImageLocations = async () => {
       try {
         const token = localStorage.getItem('accessToken');
-        const response = await fetch(`${serverBaseUrl}/image_capture/images/`, {
+<<<<<<< HEAD
+        const response = await fetch('https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/images/', {
+=======
+        const response = await fetch('http://192.168.1.135:8000/image_capture/images/', {
+>>>>>>> parent of 4b9f6a3 (All design aspects completed)
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,

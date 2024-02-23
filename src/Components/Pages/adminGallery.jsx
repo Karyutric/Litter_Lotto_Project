@@ -5,10 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import 'react-toastify/dist/ReactToastify.css';
 import './adminGallery.css'
-
-
-
-const serverBaseUrl = 'http://31.104.89.199:8000';
+=======
+import { useParams } from 'react-router-dom'; // Import useParams
+const serverBaseUrl = 'http://192.168.1.135:8000';
+>>>>>>> parent of 4b9f6a3 (All design aspects completed)
 
 const AdminGallery = () => {
     const [images, setImages] = useState([]);
@@ -26,7 +26,11 @@ const AdminGallery = () => {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await fetch(`${serverBaseUrl}/image_capture/users/${userId}/images`, {
+<<<<<<< HEAD
+            const response = await fetch(`https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/users/${userId}/images`, { 
+=======
+            const response = await fetch(`http://86.173.58.38:8000/image_capture/users/${userId}/images`, {
+>>>>>>> parent of 4b9f6a3 (All design aspects completed)
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + adminAccessToken
@@ -79,12 +83,27 @@ const AdminGallery = () => {
                     setSelectedImage(null);
                 } else {
                     toast.error("Failed to delete the image");
+=======
+    const deleteImage = async (imageId) => {
+        setIsLoading(true);
+        setError(null);
+        try {
+            const response = await fetch(`http://86.173.58.38:8000/image_capture/images/${imageId}/delete`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + adminAccessToken
+>>>>>>> parent of 4b9f6a3 (All design aspects completed)
                 }
-            } catch (error) {
-                toast.error("An error occurred while deleting the image");
+            });
+            if (response.ok) {
+                setImages(prevImages => prevImages.filter(image => image.id !== imageId));
+            } else {
+                setError('Failed to delete image');
             }
+        } catch (error) {
+            setError('An error occurred while deleting image: ' + error.message);
         }
-
+        setIsLoading(false);
     };
 
 
@@ -100,9 +119,15 @@ const AdminGallery = () => {
                             src={image.image_url} 
                             alt="User Content" 
                             className="gallery-image"
-                            onClick={() => handleImageClick(image)} // Add click handler
+                            onClick={() => handleImageClick(image)} 
                         />
-                        {/* Delete button removed from here */}
+=======
+            <div className="user-images">
+                {images.map(image => (
+                    <div key={image.id}>
+                        <img src={image.image_url} alt="User Content" /> {/* Ensure image_url is correct */}
+                        <button onClick={() => deleteImage(image.id)}>Delete Image</button>
+>>>>>>> parent of 4b9f6a3 (All design aspects completed)
                     </div>
                 ))}
             </div>

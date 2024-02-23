@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './userSettings.css'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-const serverBaseUrl = 'http://31.104.89.199:8000';
-
+=======
+>>>>>>> parent of 4b9f6a3 (All design aspects completed)
 
 const UserSettings = () => {
   const [userInfo, setUserInfo] = useState({
@@ -24,7 +23,11 @@ const UserSettings = () => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('accessToken');
-        const response = await fetch(`${serverBaseUrl}/image_capture/user/current/`, {
+<<<<<<< HEAD
+        const response = await fetch('https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/user/current/', {
+=======
+        const response = await fetch('http://192.168.1.135:8000/image_capture/user/current/', {
+>>>>>>> parent of 4b9f6a3 (All design aspects completed)
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
@@ -71,7 +74,11 @@ const UserSettings = () => {
 
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch(`${serverBaseUrl}/image_capture/user/change-password/`, {
+<<<<<<< HEAD
+      const response = await fetch('https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/user/change-password/', {
+=======
+      const response = await fetch('http://192.168.1.135:8000/image_capture/user/change-password/', {
+>>>>>>> parent of 4b9f6a3 (All design aspects completed)
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
