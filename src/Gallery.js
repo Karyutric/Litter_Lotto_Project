@@ -4,7 +4,7 @@ import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const serverBaseUrl = 'http://86.174.135.135:8000';
+const serverBaseUrl = 'http://31.104.89.199:8000';
 
 
 const Gallery = () => {

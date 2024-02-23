@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './dashboard.css';
 
-const serverBaseUrl = 'http://86.174.135.135:8000';
+const serverBaseUrl = 'http://31.104.89.199:8000';
 
 // Global initMap function defined outside the component
 window.initMap = () => {

@@ -1,6 +1,6 @@
 export const sendDataToServer = async (formData) => {
   const token = localStorage.getItem('accessToken'); // Retrieve the token from local storage
-  const serverBaseUrl = 'http://86.174.135.135:8000';
+  const serverBaseUrl = 'http://31.104.89.199:8000';
 
   try {
       const response = await fetch(`${serverBaseUrl}/image_capture/create_image_location/`, {

@@ -1,4 +1,4 @@
-const API_URL = "http://86.174.135.135:8000/image_capture/";
+const API_URL = "http://31.104.89.199:8000/image_capture/";
 
 export const register = async (userData) => {
     const response = await fetch(API_URL + 'register/', {
