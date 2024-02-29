@@ -1,137 +1,114 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';  
+import { sendDataToServer } from './utils';  // Utility function for sending data to a server
+import { toast } from 'react-toastify'; // For displaying notifications
+import 'react-toastify/dist/ReactToastify.css'; // Styling for notifications
+import "./camera.css";  // Custom CSS for styling the camera component
 
-import { useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import 'react-toastify/dist/ReactToastify.css';
-import './adminGallery.css'
+const ImageCapture = () => {
+  const videoRef = useRef(null);  // Reference to the video element where the camera stream will be displayed
+  const [imageSrc, setImageSrc] = useState(null);  // State for storing the captured image as a base64 encoded string
+  const [showPreview, setShowPreview] = useState(false);  // State to toggle between camera view and image preview
+  const [latitude, setLatitude] = useState(null);  // State for storing the latitude part of the geolocation
+  const [longitude, setLongitude] = useState(null);  // State for storing the longitude part of the geolocation
+  const [materialTag, setMaterialTag] = useState(''); // State for storing the material tag for the captured image
 
+  useEffect(() => { 
+    initCamera(); // Initialize camera on component mount
+  }, []);
 
+  const initCamera = async () => {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      console.error("mediaDevices API or getUserMedia method not available.");
+      return;
+    }
 
-const serverBaseUrl = 'http://86.181.239.223:8000';
+    try {
+      const constraints = { video: { facingMode: 'environment' } };  // Request rear camera for mobile devices
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);  
+      videoRef.current.srcObject = stream;  // Assign the camera stream to the video element
+    } catch (error) {
+      console.error('Error accessing camera:', error);  
+    }
+  };
 
-const AdminGallery = () => {
-    const [images, setImages] = useState([]);
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const adminAccessToken = localStorage.getItem('accessToken');
-    const { userId } = useParams(); 
+  const handleCapture = async () => {
+    const canvas = document.createElement('canvas');  
+    canvas.width = videoRef.current.videoWidth;  
+    canvas.height = videoRef.current.videoHeight;  
+    const context = canvas.getContext('2d');  
+    context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);  
+    const capturedImageSrc = canvas.toDataURL('image/jpeg');  
+    setImageSrc(capturedImageSrc);  
+    setShowPreview(true);  
 
-    useEffect(() => {
-        fetchUserImages(userId); // eslint-disable-next-line
-    }, [userId]);
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        setLatitude(position.coords.latitude);  
+        setLongitude(position.coords.longitude);  
+      });
+    } else {
+      console.error('Geolocation is not supported in this browser.');  
+    }
+  };
 
-    const fetchUserImages = async (userId) => {
-        setIsLoading(true);
-        setError(null);
-        try {
-            const response = await fetch(`http://86.181.239.223:8000/image_capture/users/${userId}/images`, {
+  const handleAcceptPhoto = async () => {
+    const imageBlob = await (await fetch(imageSrc)).blob(); // Convert the base64 image source to a blob
+    const formData = new FormData(); // Create a FormData object to package the image and metadata
+    formData.append('image_path', imageBlob, `Image-${Date.now()}.jpg`); // Append the image blob to the form data
+    formData.append('material_tag', materialTag); // Append the material tag to the form data
+    formData.append('latitude', latitude.toString()); // Append the latitude to the form data
+    formData.append('longitude', longitude.toString()); // Append the longitude to the form data
 
+    try {
+      await sendDataToServer(formData); // Send the form data to the server
+      toast.success("Photo successfully added!"); // Show success notification
+      setShowPreview(false); // Hide the preview and show the camera view
+      setImageSrc(null); // Reset the image source state
+      setMaterialTag(''); // Reset the material tag state
+      initCamera(); // Reinitialize the camera for the next capture
+      setTimeout(() => {
+        window.location.reload();  // Reload the page to refresh the state and UI
+      }, 2000); 
+    } catch (error) {
+      console.error('Error sending data:', error);
+      toast.error("Failed to add photo."); // Show error notification
+    }
+  };
 
+  const handleRetakePhoto = () => {
+    setShowPreview(false);  // Hide the preview and show the camera view
+    setMaterialTag(''); // Reset the material tag state
+    initCamera();  // Reinitialize the camera for another capture
+  };
 
-
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + adminAccessToken
-                }
-            });
-        
-            if (response.ok) {
-                const imagesData = await response.json();
-                // Construct full URLs
-                const updatedImagesData = imagesData.map(image => {
-                return {
-                    ...image,
-                    image_url: image.image_path ? `${serverBaseUrl}${image.image_path}` : null
-                };
-            });
-            setImages(updatedImagesData);
-            } else {
-                const errorData = await response.json();
-                setError('Failed to fetch images: ' + errorData.detail);
-            }
-        } catch (error) {
-            setError('An error occurred while fetching images: ' + error.message);
-        }
-        setIsLoading(false);
-    };
-
-
-    
-    const handleImageClick = (image) => {
-        setSelectedImage(image);
-    };
-
-    const handleCloseModal = () => {
-        setSelectedImage(null);
-      };
-
-
-    const handleDeleteImage = async () => {
-        if (selectedImage) {
-            try {
-                const response = await fetch(`${serverBaseUrl}/image_capture/images/${selectedImage.id}/delete`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${adminAccessToken}`
-                    }
-                });
-
-                if (response.ok) {
-                    setImages(images.filter((img) => img.id !== selectedImage.id));
-                    toast.success("Image successfully deleted!");
-                    setSelectedImage(null);
-                } else {
-                    toast.error("Failed to delete the image");
-
-                }
-            } catch (error) {
-                toast.error("An error occurred while deleting the image");
-            }
-        }
-
-    };
-
-
-    return (
-        <div className='adminGallery-wrapper'>
-            <h1>User Images</h1>
-            {isLoading && <p>Loading...</p>}
-            {error && <p>Error: {error}</p>}
-
-            <div className="gallery">
-                {images.map((image, index) => (
-                    <div key={index} className="gallery-item">
-                        <img 
-                            src={image.image_url} 
-                            alt="User Content" 
-                            className="gallery-image"
-                            onClick={() => handleImageClick(image)} // Add click handler
-                        />
-                        {/* Delete button removed from here */}
-
-
-
-
-
-
-                    </div>
-                ))}
-            </div>
-
-            {selectedImage && (
-                <div className="PreviewModal" onClick={handleCloseModal}>
-                    <img src={selectedImage.image_url} alt="Full Size" />
-                    <button onClick={handleDeleteImage} className="delete-button">
-                        <FontAwesomeIcon icon={faTimesCircle} color="red" size="3x" />
-                    </button>
-                </div>
-            )}
-        </div>
-    );
+  return (
+    <div className="camera-container">
+      {!showPreview ? (
+        // Show the camera view with a capture button if not in preview mode
+        <>
+          <video className="video-element" autoPlay playsInline ref={videoRef} />
+          <button className="button" onClick={handleCapture}>Capture Image</button>
+        </>
+      ) : (
+        // Show the captured image preview with accept and retake options if in preview mode
+        <>
+          <img src={imageSrc} alt="Captured" className="video-element" />
+          <div>
+            <label htmlFor="material-tag">Material Tag:</label>
+            <input
+              type="text"
+              id="material-tag"
+              value={materialTag}
+              onChange={(e) => setMaterialTag(e.target.value)}
+              placeholder="Type material (e.g., plastic)"
+            />
+          </div>
+          <button className="button" onClick={handleAcceptPhoto}>Accept Photo</button>
+          <button className="button" onClick={handleRetakePhoto}>Retake Photo</button>
+        </>
+      )}
+    </div>
+  );
 };
 
-export default AdminGallery;
-
+export default ImageCapture;

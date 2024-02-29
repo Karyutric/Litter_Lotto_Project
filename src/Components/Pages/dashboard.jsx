@@ -1,29 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './dashboard.css';
 
+// Placeholder for the global initMap function
+window.initMap = () => {};
 
-
-// Global initMap function defined outside the component
-window.initMap = () => {
-  // This will be populated later
-};
-
-
-
+const serverBaseUrl = 'http://31.104.89.199:8000';
 
 const Dashboard = () => {
-  const mapRef = useRef(null);
-  const [imageLocations, setImageLocations] = useState([]);
+  const mapRef = useRef(null); // Reference to the div where the map will be displayed
+  const [imageLocations, setImageLocations] = useState([]); // State to store image locations
 
   useEffect(() => {
-    // Define the initMap function within useEffect
+    // Defines the initMap function which initializes the Google Map
     window.initMap = () => {
       const map = new window.google.maps.Map(mapRef.current, {
-        center: { lat: 54.7877, lng: -6.4923 },
-        zoom: 8,
+        center: { lat: 54.7877, lng: -6.4923 }, // Initial center of the map
+        zoom: 8, // Initial zoom level
       });
 
-      // Place markers for each image location
+      // Loops through imageLocations and places markers on the map
       imageLocations.forEach((location) => {
         new window.google.maps.Marker({
           position: { lat: location.latitude, lng: location.longitude },
@@ -32,13 +27,14 @@ const Dashboard = () => {
       });
     };
 
-    // Load the Google Maps script
+    // Calls the function to load the Google Maps script
     loadGoogleMapsScript();
-  }, [imageLocations]); // Depend on imageLocations to update markers
+  }, [imageLocations]); // useEffect depends on imageLocations to update markers
 
-  // Function to load the Google Maps script
+  // Function to dynamically load the Google Maps script
   const loadGoogleMapsScript = () => {
     if (window.google && window.google.maps) {
+      // If the Google Maps API is already loaded, initialize the map
       window.initMap();
       return;
     }
@@ -46,28 +42,23 @@ const Dashboard = () => {
     const scriptId = 'google-maps-script';
     const existingScript = document.getElementById(scriptId);
     if (!existingScript) {
+      // If the script hasn't been loaded yet, create it and append to the document head
       const script = document.createElement('script');
       script.id = scriptId;
-      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAdRBqG6b5hSCSIyyHeBG_PadnoR2IZTHE&callback=initMap`;
+      // Set your API key in place of YOUR_API_KEY_HERE
+      script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY_HERE&callback=initMap`;
       script.async = true;
       script.defer = true;
       document.head.appendChild(script);
     }
   };
 
-  // Fetch image locations
-
-
-
+  // Fetches image locations from the server
   useEffect(() => {
     const fetchImageLocations = async () => {
       try {
-        const token = localStorage.getItem('accessToken');
-        const response = await fetch('http://86.181.239.223:8000/image_capture/images/', {
-
-
-
-
+        const token = localStorage.getItem('accessToken'); // Retrieve the access token
+        const response = await fetch(`${serverBaseUrl}/image_capture/images/`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
@@ -75,21 +66,24 @@ const Dashboard = () => {
         });
 
         if (!response.ok) {
+          // Handle HTTP errors
           throw new Error('Network response was not ok');
         }
 
-        const data = await response.json();
+        const data = await response.json(); // Parse the JSON response
+        // Update the imageLocations state with the fetched data
         setImageLocations(data.map(location => ({
           latitude: location.latitude,
           longitude: location.longitude,
         })));
       } catch (error) {
+        // Log any errors to the console
         console.error('Fetch error:', error);
       }
     };
 
-    fetchImageLocations();
-  }, []);
+    fetchImageLocations(); // Call the fetch function
+  }, []); // This useEffect has no dependencies, so it runs once on component mount
 
   return (
     <div className="dashboard">
@@ -98,12 +92,12 @@ const Dashboard = () => {
           <h1 className="header display-1 fw-bold">Litter Impact</h1>
         </header>
 
-
         <div className="container-fluid px-0">
           <div className="row">
             <div className="col">
+              {/* The map will be injected into this div */}
               <div className="map-container" ref={mapRef} style={{ height: '400px' }} />
-              </div>
+            </div>
           </div>
         </div>
       </div>
