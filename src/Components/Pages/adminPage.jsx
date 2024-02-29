@@ -19,11 +19,7 @@ const AdminPage = () => {
         setIsLoading(true);
         setError(null);
         try {
-<<<<<<< HEAD
-            const response = await fetch('https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/users/', {
-=======
             const response = await fetch('http://86.173.58.38:8000/image_capture/users/', {
->>>>>>> parent of 4b9f6a3 (All design aspects completed)
                 method: 'GET',
                 headers: { 'Authorization': 'Bearer ' + adminAccessToken }
             });
@@ -47,11 +43,7 @@ const AdminPage = () => {
         setIsLoading(true);
         setError(null);
         try {
-<<<<<<< HEAD
-            const response = await fetch(`https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/users/${userId}/delete`, {
-=======
             const response = await fetch(`http://86.173.58.38:8000/image_capture/users/${userId}/delete`, {
->>>>>>> parent of 4b9f6a3 (All design aspects completed)
                 method: 'DELETE',
                 headers: { 'Authorization': 'Bearer ' + adminAccessToken }
             });

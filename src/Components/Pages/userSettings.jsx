@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-<<<<<<< HEAD
+
 import './userSettings.css'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-=======
->>>>>>> parent of 4b9f6a3 (All design aspects completed)
+
+
 
 const UserSettings = () => {
   const [userInfo, setUserInfo] = useState({
@@ -24,11 +24,11 @@ const UserSettings = () => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('accessToken');
-<<<<<<< HEAD
-        const response = await fetch('https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/user/current/', {
-=======
-        const response = await fetch('http://192.168.1.135:8000/image_capture/user/current/', {
->>>>>>> parent of 4b9f6a3 (All design aspects completed)
+        const response = await fetch('http://86.181.239.223:8000/image_capture/user/current/', {
+
+
+
+
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
@@ -70,15 +70,16 @@ const UserSettings = () => {
     const payload = {
       current_password: currentPassword,
       new_password: newPassword,
+      
     };
 
     try {
       const token = localStorage.getItem('accessToken');
-<<<<<<< HEAD
-      const response = await fetch('https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/user/change-password/', {
-=======
-      const response = await fetch('http://192.168.1.135:8000/image_capture/user/change-password/', {
->>>>>>> parent of 4b9f6a3 (All design aspects completed)
+      const response = await fetch('http://86.181.239.223:8000/image_capture/user/change-password/', {
+
+
+
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -96,44 +97,60 @@ const UserSettings = () => {
       setCurrentPassword('');
       setNewPassword('');
       setConfirmNewPassword('');
+      toast.success("Password successfully changed!");
     } catch (error) {
       console.error('Error changing password:', error.message);
     }
   };
 
   return (
-    <div>
-      <h1>User Settings</h1>
-      <p>Name: {userInfo.first_name} {userInfo.surname}</p>
-      <p>Username: {userInfo.username}</p>
-      <p>Member Since: {userInfo.joinedDate}</p>
+    <div className="container py-5">
+      <div className='userSettings-wrapper'>
+        <div className="text-center mb-5">
+          <h1 className="mb-4">{`${userInfo.first_name} ${userInfo.surname}`}</h1>
+          <p className="text-muted h4 font-weight-bold">Member Since:</p>
+          <p className="text-muted h5 font-weight-bold">{userInfo.joinedDate}</p>
+        </div>
 
-      {error && <p className="error-message">{error}</p>} 
+        <div className="card">
+          <div className="card-body">
+            {error && <div className="alert alert-danger" role="alert">{error}</div>} 
 
-      <form onSubmit={handlePasswordChange}>
-        <input
-          type="password"
-          placeholder="Current Password"
-          value={currentPassword}
-          onChange={(e) => setCurrentPassword(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="New Password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Confirm New Password"
-          value={confirmNewPassword}
-          onChange={(e) => setConfirmNewPassword(e.target.value)}
-        />
-        <button type="submit">Change Password</button>
-      </form>
+            <form onSubmit={handlePasswordChange} className="mb-3">
+              <div className="form-group mb-3">
+                <input
+                  type="password"
+                  className="form-control"
+                  placeholder="Current Password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                />
+              </div>
+              <div className="form-group mb-3">
+                <input
+                  type="password"
+                  className="form-control"
+                  placeholder="New Password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+              </div>
+              <div className="form-group mb-3">
+                <input
+                  type="password"
+                  className="form-control"
+                  placeholder="Confirm New Password"
+                  value={confirmNewPassword}
+                  onChange={(e) => setConfirmNewPassword(e.target.value)}
+                />
+              </div>
+              <button type="submit" className="btn btn-primary w-100">Change Password</button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
 export default UserSettings;
-

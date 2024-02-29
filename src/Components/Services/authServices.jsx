@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-const API_URL = "https://litter-lotto-py-e1a362be7b85.herokuapp.com/image_capture/";
-
-=======
 const API_URL = "http://86.173.58.38:8000/image_capture/";
->>>>>>> parent of 4b9f6a3 (All design aspects completed)
 
 export const register = async (userData) => {
     const response = await fetch(API_URL + 'register/', {
