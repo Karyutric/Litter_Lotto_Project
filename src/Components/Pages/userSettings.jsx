@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import './userSettings.css'; // Importing CSS styles for the UserSettings component
-import { toast } from 'react-toastify'; // Importing toast for showing notifications
-import 'react-toastify/dist/ReactToastify.css'; // Importing CSS for toast notifications
+import './userSettings.css'; 
+import { toast } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css'; 
 
-const serverBaseUrl = 'http://31.104.89.199:8000'; // Base URL of the backend server
+const serverBaseUrl = 'http://86.185.79.60:8000'; // Base URL of the backend server
 
 const UserSettings = () => {
   // State to store user information

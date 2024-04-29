@@ -40,11 +40,11 @@ const LogoutButton = () => {
                 </Modal.Header>
                 <Modal.Body>Are you sure you want to log out?</Modal.Body>
                 <Modal.Footer>
-                    {/* Cancel button */}
+                
                     <Button variant="danger" onClick={handleLogoutCancel}>
                         No
                     </Button>
-                    {/* Confirmation button */}
+                    
                     <Button variant="primary" onClick={handleLogoutConfirm}>
                         Yes
                     </Button>

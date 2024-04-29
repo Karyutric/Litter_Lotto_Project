@@ -3,7 +3,7 @@ export const sendDataToServer = async (formData) => {
     // Retrieve the access token from local storage to use for authorization
     const token = localStorage.getItem('accessToken'); 
     // Base URL of the server where the API endpoint is located
-    const serverBaseUrl = 'http://31.104.89.199:8000';
+    const serverBaseUrl = 'http://86.185.79.60:8000';
   
     try {
         // Perform an asynchronous POST request to the server with the provided form data

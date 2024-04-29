@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // For programmatic navigation
-import { toast } from 'react-toastify'; // For displaying notifications
-import 'bootstrap/dist/css/bootstrap.min.css'; // Bootstrap for styling
-import './adminPage.css' // Custom CSS
+import { useNavigate } from 'react-router-dom'; 
+import { toast } from 'react-toastify'; 
+import 'bootstrap/dist/css/bootstrap.min.css'; 
+import './adminPage.css' 
 
-const serverBaseUrl = 'http://31.104.89.199:8000'; // Base URL of the backend server
+const serverBaseUrl = 'http://86.185.79.60:8000'; // Base URL of the backend server
 
 const AdminPage = () => {
     const [users, setUsers] = useState([]); // State for storing user data
@@ -28,7 +28,7 @@ const AdminPage = () => {
                 headers: { 'Authorization': 'Bearer ' + adminAccessToken }
             });
             if (response.ok) {
-                const data = await response.json(); // Parse JSON data
+                const data = await response.json(); 
                 setUsers(data); // Update state with fetched users
             } else {
                 setError('Failed to fetch users'); // Set error message on failure

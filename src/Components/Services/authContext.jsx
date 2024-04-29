@@ -1,7 +1,7 @@
-// Import necessary hooks from React
+// Imports necessary hooks from React
 import React, { createContext, useState, useEffect } from 'react';
 
-// Create a Context for authentication state to be accessible throughout the application
+// Creating a Context for authentication state to be accessible throughout the application
 export const AuthContext = createContext();
 
 // AuthProvider component that will wrap around the application or parts of it to provide authentication state

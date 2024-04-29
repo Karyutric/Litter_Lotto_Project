@@ -1,35 +1,35 @@
 // Import necessary hooks and components from React and additional libraries
 import React, { useContext, useState } from 'react';
-import { AuthContext } from '../Services/authContext'; // Import the authentication context
-import './LoginForm.css'; // Import CSS for styling the login form
-import { FaUser, FaLock } from "react-icons/fa"; // Import icons for the username and password fields
-import { Link, useNavigate } from 'react-router-dom'; // Import for navigation and linking within the app
-import { login as loginService } from '../Services/authServices'; // Import the login service
+import { AuthContext } from '../Services/authContext'; 
+import './LoginForm.css'; 
+import { FaUser, FaLock } from "react-icons/fa"; 
+import { Link, useNavigate } from 'react-router-dom'; 
+import { login as loginService } from '../Services/authServices'; 
 
 const LoginForm = () => {
     // State hooks for username and password inputs
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const navigate = useNavigate(); // Hook for programmatic navigation
+    const navigate = useNavigate();
     const { login } = useContext(AuthContext); // Accessing the login function from AuthContext
 
     // Handles the form submission
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Prevents the default form submission behavior
-        const userData = { username, password }; // Package user data
+        e.preventDefault(); 
+        const userData = { username, password }; 
         try {
             const response = await loginService(userData); // Attempt to log in with the provided credentials
             if (response.ok) {
-                const data = await response.json(); // Parse the successful response
-                handleSuccessfulLogin(data); // Handle successful login
+                const data = await response.json(); // Parses the successful response
+                handleSuccessfulLogin(data); // Handles successful login
             } else {
                 // Log errors if the login fails
                 console.error('Login failed with status:', response.status);
-                const errorData = await response.json(); // Attempt to parse and log error details
+                const errorData = await response.json(); 
                 console.error('Error details:', errorData);
             }
         } catch (error) {
-            console.error('Error during login:', error.message); // Log any errors that occur during the login attempt
+            console.error('Error during login:', error.message); 
         }
     };
 
@@ -79,10 +79,6 @@ const LoginForm = () => {
                                    value={password}
                                    onChange={(e) => setPassword(e.target.value)}/>
                             <FaLock className='icon'/> {/* Password icon */}
-                        </div>
-                        {/* Link to password reset */}
-                        <div className="forgot">
-                            <Link to="#">Forgot Password</Link>
                         </div>
                         {/* Submit button */}
                         <button type="submit">Login</button>

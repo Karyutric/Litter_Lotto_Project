@@ -4,79 +4,87 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./camera.css";
 
+// React functional component for capturing images on mobile devices
 const MobileImageCapture = () => {
+  // Ref for the video element where the camera stream will be displayed
   const videoRef = useRef(null);
-  const [imageSrc, setImageSrc] = useState(null);
-  const [showPreview, setShowPreview] = useState(false);
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
-  const [materialTag, setMaterialTag] = useState('');
+  // State hooks for various component states
+  const [imageSrc, setImageSrc] = useState(null); // Base64 source of the captured image
+  const [showPreview, setShowPreview] = useState(false); // Boolean to show/hide the image preview
+  const [latitude, setLatitude] = useState(null); // Latitude from geolocation
+  const [longitude, setLongitude] = useState(null); // Longitude from geolocation
+  const [materialTag, setMaterialTag] = useState(''); // User-defined tag for the material
 
+  // Effect hook to initialize the camera when the component mounts
   useEffect(() => {
     initCamera();
   }, []);
 
+  // Asynchronous function to initialize the camera
   const initCamera = async () => {
     try {
-      const constraints = { video: { facingMode: 'environment' } };
+      const constraints = { video: { facingMode: 'environment' } }; // Use the rear-facing camera
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
-      videoRef.current.srcObject = stream;
+      videoRef.current.srcObject = stream; // Assign the camera stream to the video element
     } catch (error) {
-      console.error('Error accessing camera:', error);
+      console.error('Error accessing camera:', error); // Log errors if camera access fails
     }
   };
 
+  // Asynchronous function to handle the image capture
   const handleCapture = async () => {
     const canvas = document.createElement('canvas');
-    canvas.width = videoRef.current.videoWidth;
-    canvas.height = videoRef.current.videoHeight;
+    canvas.width = videoRef.current.videoWidth; // Set canvas width to video width
+    canvas.height = videoRef.current.videoHeight; // Set canvas height to video height
     const context = canvas.getContext('2d');
-    context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-    const capturedImageSrc = canvas.toDataURL('image/jpeg');
-    setImageSrc(capturedImageSrc);
-    setShowPreview(true);
+    context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height); // Draw the video frame to the canvas
+    const capturedImageSrc = canvas.toDataURL('image/jpeg'); // Convert canvas to a data URL
+    setImageSrc(capturedImageSrc); // Set the captured image source in state
+    setShowPreview(true); // Show the preview of the captured image
 
+    // Attempt to get the current geolocation
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
-        setLatitude(position.coords.latitude);
-        setLongitude(position.coords.longitude);
+        setLatitude(position.coords.latitude); // Set latitude in state
+        setLongitude(position.coords.longitude); // Set longitude in state
       });
     } else {
-      console.error('Geolocation is not supported in this browser.');
+      console.error('Geolocation is not supported in this browser.'); // Log an error if geolocation isn't supported
     }
   };
 
+  // Asynchronous function to handle accepting the captured photo
   const handleAcceptPhoto = async () => {
-    const imageBlob = await (await fetch(imageSrc)).blob();
-    const formData = new FormData();
-    formData.append('image_path', imageBlob, `Image-${Date.now()}.jpg`); // Ensure this matches backend expectation
-    formData.append('material_tag', materialTag);
-    formData.append('latitude', latitude.toString());
-    formData.append('longitude', longitude.toString());
+    const imageBlob = await (await fetch(imageSrc)).blob(); // Convert the data URL to a blob
+    const formData = new FormData(); // Create a new FormData object for sending the image data
+    formData.append('image_path', imageBlob, `Image-${Date.now()}.jpg`); // Append the image blob to the form data
+    formData.append('material_tag', materialTag); // Append the material tag to the form data
+    formData.append('latitude', latitude.toString()); // Append the latitude to the form data
+    formData.append('longitude', longitude.toString()); // Append the longitude to the form data
 
     try {
-      // eslint-disable-next-line
-        const data = await sendDataToServer(formData);
-
-
-        toast.success("Photo successfully added!");
-        // Reset component state and UI as needed
-        setShowPreview(false);
-        setImageSrc(null);
-        setMaterialTag('');
-        initCamera();
-        setTimeout(() => {
-          window.location.reload();  
+      // Send the image data to the server
+      const data = await sendDataToServer(formData);
+      toast.success("Photo successfully added!"); // Display a success toast message
+      // Reset component state and reinitialise the camera
+      setShowPreview(false);
+      setImageSrc(null);
+      setMaterialTag('');
+      initCamera();
+      // Reload the page after 2 seconds to reset the state and UI
+      setTimeout(() => {
+        window.location.reload();
       }, 2000);
     } catch (error) {
-        console.error('Error sending data:', error);
-        toast.error("Failed to add photo.");
+        console.error('Error sending data:', error); // Log errors if sending data fails
+        toast.error("Failed to add photo."); // Display an error toast message
     }
-};
+  };
 
+  // Function to handle retaking the photo
   const handleRetakePhoto = () => {
-    setShowPreview(false);
-    initCamera();
+    setShowPreview(false); // Hide the preview
+    initCamera(); // Reinitialize the camera
   };
 
   return (

@@ -1,5 +1,5 @@
 // Base URL for the API endpoints
-const API_URL = "http://31.104.89.199:8000/image_capture/";
+const API_URL = "http://86.185.79.60:8000/image_capture/";
 
 // Function to register a new user
 export const register = async (userData) => {
@@ -25,12 +25,10 @@ export const register = async (userData) => {
 export const login = async (userData) => {
     // Perform a POST request to the login endpoint with user data
     const response = await fetch(API_URL + 'login/', {
-        method: 'POST', // HTTP method
-        headers: {'Content-Type': 'application/json'}, // Content type header to indicate JSON data
-        body: JSON.stringify(userData) // Convert userData object to JSON string
+        method: 'POST', 
+        headers: {'Content-Type': 'application/json'}, 
+        body: JSON.stringify(userData) 
     });
     
-    // Return the response object directly
-    // Note: Caller is expected to handle the response, including checking for errors
     return response;
 };

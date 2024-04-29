@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';  
-import { sendDataToServer } from './utils';  // Utility function for sending data to a server
-import { toast } from 'react-toastify'; // For displaying notifications
-import 'react-toastify/dist/ReactToastify.css'; // Styling for notifications
-import "./camera.css";  // Custom CSS for styling the camera component
+import { sendDataToServer } from './utils';  
+import { toast } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css'; 
+import "./camera.css";  
 
 const ImageCapture = () => {
   const videoRef = useRef(null);  // Reference to the video element where the camera stream will be displayed

@@ -4,7 +4,7 @@ import './dashboard.css';
 // Placeholder for the global initMap function
 window.initMap = () => {};
 
-const serverBaseUrl = 'http://31.104.89.199:8000';
+const serverBaseUrl = 'http://86.185.79.60:8000';
 
 const Dashboard = () => {
   const mapRef = useRef(null); // Reference to the div where the map will be displayed
@@ -14,7 +14,7 @@ const Dashboard = () => {
     // Defines the initMap function which initializes the Google Map
     window.initMap = () => {
       const map = new window.google.maps.Map(mapRef.current, {
-        center: { lat: 54.7877, lng: -6.4923 }, // Initial center of the map
+        center: { lat: 54.7877, lng: -6.4923 }, // Initial centre of the map
         zoom: 8, // Initial zoom level
       });
 
@@ -42,11 +42,10 @@ const Dashboard = () => {
     const scriptId = 'google-maps-script';
     const existingScript = document.getElementById(scriptId);
     if (!existingScript) {
-      // If the script hasn't been loaded yet, create it and append to the document head
       const script = document.createElement('script');
       script.id = scriptId;
-      // Set your API key in place of YOUR_API_KEY_HERE
-      script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY_HERE&callback=initMap`;
+      // Set API key
+      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCKL7W4QOWoRd1kvXzimVNy1flrg8m7HRk`;
       script.async = true;
       script.defer = true;
       document.head.appendChild(script);

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesome for icons
-import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'; // Import specific icon for use in a button
-import { toast } from 'react-toastify'; // Import toastify for showing success/error messages
-import 'react-toastify/dist/ReactToastify.css'; // Import styling for toastify
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'; 
+import { toast } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css'; 
 
-const serverBaseUrl = 'http://31.104.89.199:8000'; // Base URL of the server
+const serverBaseUrl = 'http://86.185.79.60:8000'; // Base URL of the server
 
 const Gallery = () => {
   const [images, setImages] = useState([]); // State to store fetched images
@@ -30,7 +30,7 @@ const Gallery = () => {
         throw new Error('Network response was not ok'); // Handle errors
       }
 
-      const data = await response.json(); // Parse JSON response
+      const data = await response.json(); 
       setImages(data); // Update state with fetched images
     } catch (error) {
       console.error('Error fetching images:', error); // Log errors
@@ -85,7 +85,7 @@ const Gallery = () => {
         {selectedImage && (
           <div className="PreviewModal" onClick={handleCloseModal}>
             <img src={selectedImage.image_url} alt="Full Size" />
-            {selectedImage.material_tag && <p className="tag">{selectedImage.material_tag}</p>} // Conditional rendering of tags if available
+            {selectedImage.material_tag && <p className="tag">{selectedImage.material_tag}</p>} {/* Conditional rendering of tags if available*/}
             <button onClick={handleDeleteImage} className="delete-button">
               <FontAwesomeIcon icon={faTimesCircle} color="red" size="3x" />
             </button>

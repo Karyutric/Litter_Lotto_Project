@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-// This is a React component for capturing the user's current geolocation.
+// Component for capturing the user's current geolocation.
 const LocationCapture = () => {
   // State to store the current latitude.
   const [latitude, setLatitude] = useState(null);

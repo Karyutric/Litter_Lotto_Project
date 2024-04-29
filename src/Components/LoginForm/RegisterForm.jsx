@@ -1,10 +1,10 @@
 // Import necessary hooks and components from React and additional libraries
 import React, { useState, useContext } from 'react';
-import './RegisterForm.css'; // Import CSS for styling the registration form
-import { Link, useNavigate } from 'react-router-dom'; // Import for navigation and linking within the app
-import { FaUser, FaLock, FaEnvelope, FaSignature } from "react-icons/fa"; // Import icons for form fields
-import { register } from '../Services/authServices'; // Import the registration service
-import { AuthContext } from '../Services/authContext'; // Import the authentication context
+import './RegisterForm.css'; 
+import { Link, useNavigate } from 'react-router-dom'; 
+import { FaUser, FaLock, FaEnvelope, FaSignature } from "react-icons/fa"; 
+import { register } from '../Services/authServices'; 
+import { AuthContext } from '../Services/authContext'; 
 
 const RegisterForm = () => {
     // State hooks for form fields
@@ -14,13 +14,13 @@ const RegisterForm = () => {
     const [surname, setSurname] = useState('');
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
-    const navigate = useNavigate(); // Hook for programmatic navigation
+    const navigate = useNavigate(); 
     
-    const { setUser } = useContext(AuthContext); // Although unused, it's intended for setting user context
+    const { setUser } = useContext(AuthContext); 
 
     // Handles the form submission
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Prevents the default form submission behavior
+        e.preventDefault(); 
         if (password !== password2) {
             console.error('Passwords do not match'); // Checks if passwords match
             return;
@@ -51,32 +51,32 @@ const RegisterForm = () => {
                     {/* Input fields for first name, surname, username, email, and passwords */}
                     <div className="input-box">
                         <input type="text" placeholder='First Name' required value={first_name} onChange={(e) => setFirst_name(e.target.value)} />
-                        <FaSignature className='icon' /> {/* Icon for first name */}
+                        <FaSignature className='icon' /> 
                     </div>
                     <div className="input-box">
                         <input type="text" placeholder='Surname' required value={surname} onChange={(e) => setSurname(e.target.value)} />
-                        <FaSignature className='icon' /> {/* Icon for surname */}
+                        <FaSignature className='icon' /> 
                     </div>
                     <div className="input-box">
                         <input type="text" placeholder='Username' required value={username} onChange={(e) => setUsername(e.target.value)} />
-                        <FaUser className='icon' /> {/* Icon for username */}
+                        <FaUser className='icon' /> 
                     </div>
                     <div className="input-box">
                         <input type="email" placeholder='Email' required value={email} onChange={(e) => setEmail(e.target.value)} />
-                        <FaEnvelope className='icon' /> {/* Icon for email */}
+                        <FaEnvelope className='icon' /> 
                     </div>
                     <div className="input-box">
                         <input type="password" placeholder='Password' required value={password} onChange={(e) => setPassword(e.target.value)} />
-                        <FaLock className='icon' /> {/* Icon for password */}
+                        <FaLock className='icon' /> 
                     </div>
                     <div className="input-box">
                         <input type="password" placeholder='Confirm Password' required value={password2} onChange={(e) => setPassword2(e.target.value)} />
-                        <FaLock className='icon' /> {/* Icon for confirm password */}
+                        <FaLock className='icon' /> 
                     </div>
                 
-                    <button type="submit">Register</button> {/* Registration button */}
+                    <button type="submit">Register</button> 
 
-                    <Link to="/login" className="cancel-button">Cancel</Link> {/* Link to navigate back to login */}
+                    <Link to="/login" className="cancel-button">Cancel</Link> 
 
                 </form>
 
